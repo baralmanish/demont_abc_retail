@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
+use App\Http\Controllers\Auth\DashboardController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\NewPasswordController;
@@ -57,27 +58,15 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('dashboard/index');
-    })->name('dashboard');
-    Route::get('dashboard/categories', function () {
-        return Inertia::render('dashboard/categories');
-    })->name('dashboard.categories');
-    Route::get('dashboard/products', function () {
-        return Inertia::render('dashboard/products');
-    })->name('dashboard.products');
-    Route::get('dashboard/orders', function () {
-        return Inertia::render('dashboard/orders');
-    })->name('dashboard.orders');
-    Route::get('dashboard/testimonials', function () {
-        return Inertia::render('dashboard/testimonials');
-    })->name('dashboard.testimonials');
-    Route::get('dashboard/seo', function () {
-        return Inertia::render('dashboard/seo');
-    })->name('dashboard.seo');
-    Route::get('dashboard/social-links', function () {
-        return Inertia::render('dashboard/social-links');
-    })->name('dashboard.socialLinks');
+    Route::controller(DashboardController::class)->group(function () {
+        Route::get('/dashboard', 'index')->name('dashboard');
+        Route::get('/dashboard/categories', 'categories')->name('dashboard/categories');
+        Route::get('/dashboard/products', 'products')->name('dashboard/products');
+        Route::get('/dashboard/orders', 'orders')->name('dashboard/orders');
+        Route::get('/dashboard/testimonials', 'testimonials')->name('dashboard/testimonials');
+        Route::get('/dashboard/seo', 'seo')->name('dashboard/seo');
+        Route::get('/dashboard/social-links', 'socialLinks')->name('dashboard/socialLinks');
+    });
 
 
     Route::get('settings/site', function () {

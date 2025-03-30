@@ -24,6 +24,10 @@ php artisan db:seed --class=TestimonialSeeder
 ```
 
 ```bash
+php artisan db:seed --class=OrderSeeder
+```
+
+```bash
 php artisan config:clear
 php artisan cache:clear
 ```
