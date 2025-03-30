@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
@@ -53,4 +54,33 @@ Route::middleware('auth')->group(function () {
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
+});
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('dashboard', function () {
+        return Inertia::render('dashboard/index');
+    })->name('dashboard');
+    Route::get('dashboard/categories', function () {
+        return Inertia::render('dashboard/categories');
+    })->name('dashboard.categories');
+    Route::get('dashboard/products', function () {
+        return Inertia::render('dashboard/products');
+    })->name('dashboard.products');
+    Route::get('dashboard/orders', function () {
+        return Inertia::render('dashboard/orders');
+    })->name('dashboard.orders');
+    Route::get('dashboard/testimonials', function () {
+        return Inertia::render('dashboard/testimonials');
+    })->name('dashboard.testimonials');
+    Route::get('dashboard/seo', function () {
+        return Inertia::render('dashboard/seo');
+    })->name('dashboard.seo');
+    Route::get('dashboard/social-links', function () {
+        return Inertia::render('dashboard/social-links');
+    })->name('dashboard.socialLinks');
+
+
+    Route::get('settings/site', function () {
+        return Inertia::render('settings/site');
+    })->name('settings.site');
 });
