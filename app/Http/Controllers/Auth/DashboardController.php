@@ -7,6 +7,9 @@ use App\Models\Category;
 use Inertia\Inertia;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\SocialLink;
+use App\Models\Testimonial;
+use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
@@ -27,12 +30,30 @@ class DashboardController extends Controller
 
     public function categories()
     {
-        return Inertia::render('dashboard/categories');
+        $categories = Category::all();
+
+        return Inertia::render('dashboard/categories/index', [
+            'categories' => $categories
+        ]);
+    }
+
+    public function addCategory()
+    {
+        return Inertia::render('dashboard/categories/add');
+    }
+
+    public function editCategory(Request $request)
+    {
+        return Inertia::render('dashboard/categories/edit');
     }
 
     public function products()
     {
-        return Inertia::render('dashboard/products');
+        $products = Product::with(['category'])->get();
+
+        return Inertia::render('dashboard/products', [
+            'products' => $products
+        ]);
     }
 
     public function orders()
@@ -42,7 +63,11 @@ class DashboardController extends Controller
 
     public function testimonials()
     {
-        return Inertia::render('dashboard/testimonials');
+        $testimonials = Testimonial::all();
+
+        return Inertia::render('dashboard/testimonials', [
+            'testimonials' => $testimonials
+        ]);
     }
 
     public function seo()
@@ -52,6 +77,10 @@ class DashboardController extends Controller
 
     public function socialLinks()
     {
-        return Inertia::render('dashboard/social-links');
+        $socialLink = SocialLink::first();
+
+        return Inertia::render('dashboard/social-links', [
+            'socialLink' => $socialLink
+        ]);
     }
 }

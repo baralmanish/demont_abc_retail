@@ -1,5 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
-import { FacebookIcon, Layers2, LayoutGrid, MessageCircleCode, PackageSearch, ShoppingBasket, Vote } from 'lucide-react';
+import { FacebookIcon, Layers2, LayoutGrid, MessageCircleCode, PackageSearch, Vote } from 'lucide-react';
 
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
@@ -30,11 +30,6 @@ export function AppSidebar() {
                 title: 'Products',
                 href: '/dashboard/products',
                 icon: PackageSearch,
-            },
-            {
-                title: 'Orders',
-                href: '/dashboard/orders',
-                icon: ShoppingBasket,
             },
             {
                 title: 'Testimonials',

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\CategoryController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\DashboardController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
@@ -60,12 +61,21 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::controller(DashboardController::class)->group(function () {
         Route::get('/dashboard', 'index')->name('dashboard');
-        Route::get('/dashboard/categories', 'categories')->name('dashboard/categories');
-        Route::get('/dashboard/products', 'products')->name('dashboard/products');
-        Route::get('/dashboard/orders', 'orders')->name('dashboard/orders');
-        Route::get('/dashboard/testimonials', 'testimonials')->name('dashboard/testimonials');
-        Route::get('/dashboard/seo', 'seo')->name('dashboard/seo');
-        Route::get('/dashboard/social-links', 'socialLinks')->name('dashboard/socialLinks');
+
+        Route::get('/dashboard/products', 'products')->name('dashboard.products');
+        Route::get('/dashboard/orders', 'orders')->name('dashboard.orders');
+        Route::get('/dashboard/testimonials', 'testimonials')->name('dashboard.testimonials');
+        Route::get('/dashboard/seo', 'seo')->name('dashboard.seo');
+        Route::get('/dashboard/social-links', 'socialLinks')->name('dashboard.socialLinks');
+    });
+
+    Route::controller(CategoryController::class)->group(function () {
+        Route::get('/dashboard/categories', 'index')->name('dashboard.categories');
+        Route::get('/dashboard/categories/add', 'add')->name('dashboard.categories.add');
+        Route::get('/dashboard/categories/{id}/edit', 'edit')->name('dashboard.categories.edit');
+        Route::post('/dashboard/categories/add', 'create')->name('dashboard.categories.create');
+        Route::post('/dashboard/categories/{id}/edit', 'update')->name('dashboard.categories.update');
+        Route::delete('/dashboard/categories/{id}/delete', 'delete')->name('dashboard.categories.delete');
     });
 
 

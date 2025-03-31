@@ -47,7 +47,7 @@ export default function Dashboard() {
                     <Badge variant={getOrderStatusVariants(row.status)}>{row.status}</Badge>
                 </td>
                 <td className="px-6 py-3 text-center">
-                    <Eye className="cursor-pointer opacity-45 hover:opacity-75" />
+                    <Eye className="h-4 w-4 cursor-pointer opacity-45 hover:opacity-75" />
                 </td>
             </tr>
         );
