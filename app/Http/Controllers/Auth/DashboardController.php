@@ -28,25 +28,6 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function categories()
-    {
-        $categories = Category::all();
-
-        return Inertia::render('dashboard/categories/index', [
-            'categories' => $categories
-        ]);
-    }
-
-    public function addCategory()
-    {
-        return Inertia::render('dashboard/categories/add');
-    }
-
-    public function editCategory(Request $request)
-    {
-        return Inertia::render('dashboard/categories/edit');
-    }
-
     public function products()
     {
         $products = Product::with(['category'])->get();
@@ -82,5 +63,23 @@ class DashboardController extends Controller
         return Inertia::render('dashboard/social-links', [
             'socialLink' => $socialLink
         ]);
+    }
+
+    public function socialLinksUpdate(Request $request)
+    {
+        $socialLink = SocialLink::first();
+
+        $validatedData = $request->validate([
+            'facebook' => 'nullable|regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/|max:255',
+            'instagram' => 'nullable|regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/|max:255',
+            'twitter' => 'nullable|regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/|max:255',
+            'youtube' => 'nullable|regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/|max:255',
+            'linkedin' => 'nullable|regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/|max:255',
+        ]);
+
+
+        $socialLink->update($validatedData);
+
+        return redirect()->route('dashboard.socialLinks')->with('success', 'Category updated successfully');
     }
 }

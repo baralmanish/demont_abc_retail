@@ -22,8 +22,15 @@ export interface NavItem {
     isActive?: boolean;
 }
 
+export interface SharedDataMeta {
+    title: string;
+    description: string;
+    keywords: string;
+}
+
 export interface SharedData {
     name: string;
+    meta: SharedDataMeta;
     quote: { message: string; author: string };
     auth: Auth;
     ziggy: Config & { location: string };

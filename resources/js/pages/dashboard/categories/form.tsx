@@ -28,9 +28,6 @@ export default function CategoriesForm() {
         image: null,
     });
     const [image, setImage] = useState<string | null>(null);
-    const [imageFile, setImageFile] = useState<File>();
-
-    console.log({ category });
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
@@ -50,14 +47,6 @@ export default function CategoriesForm() {
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        const formData = new FormData();
-        formData.append('_method', 'PATCH');
-        formData.append('name', data.name);
-        formData.append('description', data.description);
-        if (imageFile) {
-            formData.append('image', imageFile);
-        }
-
         if (id) {
             post(route('dashboard.categories.update', id), {
                 preserveScroll: true,
@@ -75,15 +64,12 @@ export default function CategoriesForm() {
         const file = event.target.files?.[0];
 
         if (file) {
-            setImageFile(file);
             setData('image', file);
             const reader = new FileReader();
             reader.onloadend = () => setImage(reader.result as string);
             reader.readAsDataURL(file);
         }
     };
-
-    console.log('>>> image', image);
 
     const renderImage = () => {
         const thisImage = image || category?.image || '';
@@ -166,7 +152,7 @@ export default function CategoriesForm() {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Categories" />
+            <Head title={category ? `Edit ${category.name}` : 'Add Category'} />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 <PageHeader title={category ? `Edit ${category.name}` : 'Add Category'} onBack={() => router.get(route('dashboard.categories'))} />
                 {renderForm()}

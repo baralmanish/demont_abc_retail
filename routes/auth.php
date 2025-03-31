@@ -67,6 +67,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/dashboard/testimonials', 'testimonials')->name('dashboard.testimonials');
         Route::get('/dashboard/seo', 'seo')->name('dashboard.seo');
         Route::get('/dashboard/social-links', 'socialLinks')->name('dashboard.socialLinks');
+        Route::post('/dashboard/social-links', 'socialLinksUpdate')->name('dashboard.socialLinks.update');
     });
 
     Route::controller(CategoryController::class)->group(function () {
