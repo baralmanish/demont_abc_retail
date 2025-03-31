@@ -4,7 +4,7 @@ namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CategoryRequest extends FormRequest
+class TestimonialRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -17,7 +17,10 @@ class CategoryRequest extends FormRequest
 
         $validation = [
             'name' => ['required', 'string', 'max:50'],
-            'description' => ['nullable', 'string', 'max:255'],
+            'review' => ['required', 'string', 'max:255'],
+            'rating' => ['nullable', 'numeric', 'between:1,5'],
+            'order' => ['nullable', 'integer', 'min:0'],
+            'status' => ['required', 'in:active,inactive'],
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif|max:4096']
         ];
 

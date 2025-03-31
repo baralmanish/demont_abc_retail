@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\TestimonialController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -64,7 +65,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::get('/dashboard/products', 'products')->name('dashboard.products');
         Route::get('/dashboard/orders', 'orders')->name('dashboard.orders');
-        Route::get('/dashboard/testimonials', 'testimonials')->name('dashboard.testimonials');
+        
         Route::get('/dashboard/seo', 'seo')->name('dashboard.seo');
         Route::get('/dashboard/social-links', 'socialLinks')->name('dashboard.socialLinks');
         Route::post('/dashboard/social-links', 'socialLinksUpdate')->name('dashboard.socialLinks.update');
@@ -77,6 +78,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/dashboard/categories/add', 'create')->name('dashboard.categories.create');
         Route::post('/dashboard/categories/{id}/edit', 'update')->name('dashboard.categories.update');
         Route::delete('/dashboard/categories/{id}/delete', 'delete')->name('dashboard.categories.delete');
+    });
+
+    Route::controller(TestimonialController::class)->group(function () {
+        Route::get('/dashboard/testimonials', 'index')->name('dashboard.testimonials');
+        Route::get('/dashboard/testimonials/add', 'add')->name('dashboard.testimonials.add');
+        Route::get('/dashboard/testimonials/{id}/edit', 'edit')->name('dashboard.testimonials.edit');
+        Route::post('/dashboard/testimonials/add', 'create')->name('dashboard.testimonials.create');
+        Route::post('/dashboard/testimonials/{id}/edit', 'update')->name('dashboard.testimonials.update');
+        Route::delete('/dashboard/testimonials/{id}/delete', 'delete')->name('dashboard.testimonials.delete');
     });
 
 

@@ -39,6 +39,7 @@ class CategoryController extends Controller
     {
         $data = $request->validated();
 
+        // Store new image
         $imagePath = $request->file('image')->storeAs(
             'categories',
             time() . '_' . $request->file('image')->getClientOriginalName(),

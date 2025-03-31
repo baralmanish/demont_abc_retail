@@ -11,20 +11,24 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { BreadcrumbItem, SharedData } from '@/types';
-import { Category, CategoryForm } from '@/types/category';
+import { Testimonial, TestimonialForm } from '@/types/testimonial';
 
 interface InertiaPage extends SharedData {
     id?: string;
-    category?: Category;
+    testimonial?: Testimonial;
 }
 
 export default function CategoriesForm() {
-    const { id, category } = usePage<InertiaPage>().props;
+    const { id, testimonial } = usePage<InertiaPage>().props;
 
-    const { data, setData, post, errors, processing, recentlySuccessful, reset } = useForm<Required<CategoryForm>>({
-        name: category?.name || '',
-        description: category?.description || '',
+    const { data, setData, post, errors, processing, recentlySuccessful, reset } = useForm<Required<TestimonialForm>>({
+        name: testimonial?.name || '',
+        review: testimonial?.review || '',
+        rating: testimonial?.rating || 5,
+        order: testimonial?.order || 0,
+        status: testimonial?.status || 'active',
         image: null,
     });
     const [image, setImage] = useState<string | null>(null);
@@ -36,10 +40,10 @@ export default function CategoriesForm() {
         },
         {
             title: 'Categories',
-            href: '/dashboard/categories',
+            href: '/dashboard/testimonials',
         },
         {
-            title: category ? `Edit ${category.name}` : 'Add Category',
+            title: testimonial ? `Edit Testimonial` : 'Add Testimonial',
             href: '',
         },
     ];
@@ -48,14 +52,14 @@ export default function CategoriesForm() {
         e.preventDefault();
 
         if (id) {
-            post(route('dashboard.categories.update', id), {
+            post(route('dashboard.testimonials.update', id), {
                 preserveScroll: true,
-                onSuccess: () => console.log('Category added successfully!'),
+                onSuccess: () => console.log('Testimonial added successfully!'),
             });
         } else {
-            post(route('dashboard.categories.create'), {
+            post(route('dashboard.testimonials.create'), {
                 preserveScroll: true,
-                onSuccess: () => console.log('Category added successfully!'),
+                onSuccess: () => console.log('Testimonial added successfully!'),
             });
         }
     };
@@ -72,7 +76,7 @@ export default function CategoriesForm() {
     };
 
     const renderImage = () => {
-        const thisImage = image || category?.image || '';
+        const thisImage = image || testimonial?.image || '';
 
         if (!thisImage) return;
 
@@ -97,22 +101,61 @@ export default function CategoriesForm() {
                             autoComplete="name"
                             placeholder="Category name"
                         />
-
                         <InputError message={errors.name} />
                     </div>
                     <div className="grid gap-2">
-                        <Label htmlFor="description">Description</Label>
+                        <Label htmlFor="review">
+                            Review<span className="pl-0.5 text-red-600 dark:text-red-400">*</span>
+                        </Label>
                         <Textarea
-                            id="description"
+                            id="review"
                             rows={3}
                             className="mt-1 block w-full"
-                            value={data.description}
-                            onChange={(e) => setData('description', e.target.value)}
-                            autoComplete="description"
-                            placeholder="Category Description"
+                            value={data.review}
+                            onChange={(e) => setData('review', e.target.value)}
+                            autoComplete="review"
+                            placeholder="Review"
                         />
-
-                        <InputError message={errors.description} />
+                        <InputError message={errors.review} />
+                    </div>
+                    <div className="grid gap-2">
+                        <Label htmlFor="rating">
+                            Rating<span className="pl-0.5 text-red-600 dark:text-red-400">*</span>
+                        </Label>
+                        <Select
+                            value={data.rating.toString()} // Convert number to string if needed
+                            onValueChange={(value) => setData('rating', Number(value))}
+                        >
+                            <SelectTrigger>
+                                <SelectValue placeholder="Select Rating" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {[1, 2, 3, 4, 5].map((num) => (
+                                    <SelectItem key={num} value={num.toString()}>
+                                        {num} Stars
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                        <InputError message={errors.rating} />
+                    </div>
+                    <div className="grid gap-2">
+                        <Label htmlFor="status">
+                            Status<span className="pl-0.5 text-red-600 dark:text-red-400">*</span>
+                        </Label>
+                        <Select value={data.status} onValueChange={(value) => setData('status', value as 'active' | 'inactive')}>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Select Status" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {['active', 'inactive'].map((status) => (
+                                    <SelectItem key={status} value={status}>
+                                        {status.toLocaleUpperCase()}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                        <InputError message={errors.status} />
                     </div>
                     <div className="grid gap-2">
                         <Label htmlFor="image">
@@ -120,7 +163,7 @@ export default function CategoriesForm() {
                             <span className="pl-0.5 text-red-600 dark:text-red-400">*</span>
                         </Label>
                         <FileInput
-                            required={!category?.image}
+                            required={!testimonial?.image}
                             id="image"
                             className="mt-1 block w-full"
                             accept="image/png, image/jpeg"
@@ -152,9 +195,9 @@ export default function CategoriesForm() {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title={category ? `Edit ${category.name}` : 'Add Category'} />
+            <Head title={testimonial ? `Edit Testimonial` : 'Add Testimonial'} />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-                <PageHeader title={category ? `Edit ${category.name}` : 'Add Category'} onBack={() => router.get(route('dashboard.categories'))} />
+                <PageHeader title={testimonial ? `Edit Testimonial` : 'Add Testimonial'} onBack={() => router.get(route('dashboard.categories'))} />
                 {renderForm()}
             </div>
         </AppLayout>

@@ -2,9 +2,9 @@ import { Head, usePage } from '@inertiajs/react';
 import { Eye, Layers2, PackageSearch, ShoppingBasket } from 'lucide-react';
 
 import { CardStats } from '@/components/card-stats';
+import { Badge } from '@/components/ui/badge';
 import AppLayout from '@/layouts/app-layout';
 
-import { Badge } from '@/components/ui/badge';
 import { getOrderStatusVariants } from '@/lib/utils';
 import { BreadcrumbItem, SharedData } from '@/types';
 import { Order } from '@/types/order';
