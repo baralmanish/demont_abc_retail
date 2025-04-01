@@ -21,7 +21,7 @@ class ProductFactory extends Factory
             'name' => $this->faker->word(),
             'description' => $this->faker->sentence(),
             'price' => $this->faker->randomFloat(2, 5, 100), // Price between 5 and 100
-            'image' => 'https://via.placeholder.com/150', // Placeholder image
+            'image' => 'https://placehold.co/400', // Placeholder image
             'category_id' => Category::inRandomOrder()->first()->id ?? 1, // Assign a random category
             'status' => $this->faker->randomElement(['active', 'inactive']),
         ];

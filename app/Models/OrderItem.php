@@ -16,6 +16,13 @@ class OrderItem extends Model
         'price'
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
+    protected $appends = ['price_formatted'];
+
     public function order()
     {
         return $this->belongsTo(Order::class);
@@ -24,5 +31,10 @@ class OrderItem extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function getPriceFormattedAttribute()
+    {
+        return 'AED ' . number_format($this->price, 2);
     }
 }

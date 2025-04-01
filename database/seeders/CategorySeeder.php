@@ -14,12 +14,12 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            ['name' => 'Almonds', 'description' => 'Healthy and nutritious almonds.', 'image' => 'https://via.placeholder.com/150'],
-            ['name' => 'Biscuits', 'description' => 'Crunchy and tasty biscuits.', 'image' => 'https://via.placeholder.com/150'],
-            ['name' => 'Bread', 'description' => 'Freshly baked bread.', 'image' => 'https://via.placeholder.com/150'],
-            ['name' => 'Cheese', 'description' => 'Delicious dairy cheese.', 'image' => 'https://via.placeholder.com/150'],
-            ['name' => 'Coffee', 'description' => 'Premium quality coffee.', 'image' => 'https://via.placeholder.com/150'],
-            ['name' => 'Elaichi', 'description' => 'Aromatic cardamom spice.', 'image' => 'https://via.placeholder.com/150'],
+            ['name' => 'Almonds', 'description' => 'Healthy and nutritious almonds.', 'image' => 'https://placehold.co/400'],
+            ['name' => 'Biscuits', 'description' => 'Crunchy and tasty biscuits.', 'image' => 'https://placehold.co/400'],
+            ['name' => 'Bread', 'description' => 'Freshly baked bread.', 'image' => 'https://placehold.co/400'],
+            ['name' => 'Cheese', 'description' => 'Delicious dairy cheese.', 'image' => 'https://placehold.co/400'],
+            ['name' => 'Coffee', 'description' => 'Premium quality coffee.', 'image' => 'https://placehold.co/400'],
+            ['name' => 'Elaichi', 'description' => 'Aromatic cardamom spice.', 'image' => 'https://placehold.co/400'],
         ];
 
         foreach ($categories as $category) {

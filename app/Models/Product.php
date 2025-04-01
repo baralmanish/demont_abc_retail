@@ -14,8 +14,16 @@ class Product extends Model
         'description',
         'price',
         'image',
+        'status',
         'category_id'
     ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+
+    protected $appends = ['price_formatted'];
 
     public function category()
     {
@@ -30,5 +38,10 @@ class Product extends Model
     public function cartItems()
     {
         return $this->hasMany(Cart::class);
+    }
+
+    public function getPriceFormattedAttribute()
+    {
+        return 'AED ' . number_format($this->price, 2);
     }
 }

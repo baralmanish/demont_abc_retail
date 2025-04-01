@@ -19,7 +19,6 @@ class AdminSeeder extends Seeder
                 'email' => 'info@abc-retail.ae',
                 'email_verified_at' => now(),
                 'password' => Hash::make('admin123'), // Admin password
-                'image' => 'https://via.placeholder.com/150',
                 'role' => 'ADMIN',
                 'remember_token' => \Illuminate\Support\Str::random(10),
             ]);
