@@ -27,4 +27,8 @@ class Setting extends Model
         'footer_script',
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
 }

@@ -17,4 +17,9 @@ class SocialLink extends Model
         'whatsapp',
         'linkedin'
     ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
 }

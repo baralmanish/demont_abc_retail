@@ -17,4 +17,9 @@ class Testimonial extends Model
         'order',
         'status'
     ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
 }

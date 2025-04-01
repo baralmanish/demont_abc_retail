@@ -15,4 +15,9 @@ class Seo extends Model
         'meta_title',
         'meta_description'
     ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
 }

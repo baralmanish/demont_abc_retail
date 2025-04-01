@@ -1,5 +1,5 @@
 import { Head, Link, router, usePage } from '@inertiajs/react';
-import { PencilIcon, PlusIcon, Trash2 } from 'lucide-react';
+import { BadgeAlert, PencilIcon, PlusIcon, Trash2 } from 'lucide-react';
 
 import { PageHeader } from '@/components/page-header';
 import { Badge } from '@/components/ui/badge';
@@ -78,6 +78,19 @@ export default function Testimonials() {
         );
     };
 
+    const renderNoData = () => {
+        return (
+            <tr className="border-b border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
+                <td colSpan={6} className="px-6 py-8">
+                    <div className="flex flex-col items-center gap-2 opacity-60">
+                        <BadgeAlert className="h-12 w-12" />
+                        <span>No Testimonial Found</span>
+                    </div>
+                </td>
+            </tr>
+        );
+    };
+
     const renderTable = () => {
         return (
             <div className="relative overflow-x-auto">
@@ -101,7 +114,7 @@ export default function Testimonials() {
                             </th>
                         </tr>
                     </thead>
-                    <tbody>{testimonials.map(renderTableRow)}</tbody>
+                    <tbody>{testimonials.length ? testimonials.map(renderTableRow) : renderNoData()}</tbody>
                 </table>
             </div>
         );

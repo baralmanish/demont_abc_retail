@@ -6,9 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Inertia\Inertia;
 use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\SocialLink;
-use App\Models\Testimonial;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -37,17 +37,12 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function orders()
+    public function order($id)
     {
-        return Inertia::render('dashboard/orders');
-    }
+        $orderData = Order::with('orderItems.product', 'payment')->findOrFail($id);
 
-    public function testimonials()
-    {
-        $testimonials = Testimonial::all();
-
-        return Inertia::render('dashboard/testimonials', [
-            'testimonials' => $testimonials
+        return Inertia::render('dashboard/order', [
+            'order' => $orderData
         ]);
     }
 

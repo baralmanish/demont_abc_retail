@@ -64,7 +64,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::controller(DashboardController::class)->group(function () {
         Route::get('/dashboard', 'index')->name('dashboard');
 
-        Route::get('/dashboard/orders', 'orders')->name('dashboard.orders');
+        Route::get('/dashboard/order/{id}', 'order')->name('dashboard.order');
 
         Route::get('/dashboard/seo', 'seo')->name('dashboard.seo');
         Route::get('/dashboard/social-links', 'socialLinks')->name('dashboard.socialLinks');

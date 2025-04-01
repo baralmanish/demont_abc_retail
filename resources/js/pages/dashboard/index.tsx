@@ -1,5 +1,5 @@
-import { Head, usePage } from '@inertiajs/react';
-import { Eye, Layers2, PackageSearch, ShoppingBasket } from 'lucide-react';
+import { Head, Link, usePage } from '@inertiajs/react';
+import { BadgeAlert, Eye, Layers2, PackageSearch, ShoppingBasket } from 'lucide-react';
 
 import { CardStats } from '@/components/card-stats';
 import { Badge } from '@/components/ui/badge';
@@ -47,7 +47,22 @@ export default function Dashboard() {
                     <Badge variant={getOrderStatusVariants(row.status)}>{row.status}</Badge>
                 </td>
                 <td className="px-6 py-3 text-center">
-                    <Eye className="h-4 w-4 cursor-pointer opacity-45 hover:opacity-75" />
+                    <Link href={route('dashboard.order', { id: row.id })}>
+                        <Eye className="h-4 w-4 cursor-pointer opacity-45 hover:opacity-75" />
+                    </Link>
+                </td>
+            </tr>
+        );
+    };
+
+    const renderNoData = () => {
+        return (
+            <tr className="border-b border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
+                <td colSpan={6} className="px-6 py-8">
+                    <div className="flex flex-col items-center gap-2 opacity-60">
+                        <BadgeAlert className="h-12 w-12" />
+                        <span>No Order Found</span>
+                    </div>
                 </td>
             </tr>
         );
@@ -79,7 +94,7 @@ export default function Dashboard() {
                             </th>
                         </tr>
                     </thead>
-                    <tbody>{orders.map(renderTableRow)}</tbody>
+                    <tbody>{orders.length ? orders.map(renderTableRow) : renderNoData()}</tbody>
                 </table>
             </div>
         );

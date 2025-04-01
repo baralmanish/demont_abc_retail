@@ -197,7 +197,7 @@ export default function CategoriesForm() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={testimonial ? `Edit Testimonial` : 'Add Testimonial'} />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-                <PageHeader title={testimonial ? `Edit Testimonial` : 'Add Testimonial'} onBack={() => router.get(route('dashboard.categories'))} />
+                <PageHeader title={testimonial ? `Edit Testimonial` : 'Add Testimonial'} onBack={() => router.get(route('dashboard.testimonials'))} />
                 {renderForm()}
             </div>
         </AppLayout>

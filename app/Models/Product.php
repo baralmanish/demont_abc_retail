@@ -18,6 +18,11 @@ class Product extends Model
         'category_id'
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+
     protected $appends = ['price_formatted'];
 
     public function category()
