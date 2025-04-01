@@ -22,15 +22,8 @@ export interface NavItem {
     isActive?: boolean;
 }
 
-export interface SharedDataMeta {
-    title: string;
-    description: string;
-    keywords: string;
-}
-
 export interface SharedData {
     name: string;
-    meta: SharedDataMeta;
     quote: { message: string; author: string };
     auth: Auth;
     ziggy: Config & { location: string };
@@ -47,5 +40,3 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
-
-export type BadgeVariant = 'default' | 'secondary' | 'success' | 'error' | 'info';
