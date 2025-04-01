@@ -42,12 +42,17 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'name' => config('app.name'),
+            'meta' => [
+                'title' => 'ABC Retail - Your Online Supermarket',
+                'description' => 'Best online supermarket in UAE. Get groceries, electronics, and more.',
+                'keywords' => 'online shopping, ABC Retail, supermarket, UAE',
+            ],
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
                 'user' => $request->user(),
             ],
             'ziggy' => fn (): array => [
-                ...(new Ziggy)->toArray(),
+                ...(new Ziggy())->toArray(),
                 'location' => $request->url(),
             ]
         ];
