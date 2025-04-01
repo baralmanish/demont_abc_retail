@@ -17,16 +17,12 @@ class TestimonialRequest extends FormRequest
 
         $validation = [
             'name' => ['required', 'string', 'max:50'],
-            'review' => ['required', 'string', 'max:255'],
+            'review' => ['required', 'string', 'max:500'],
             'rating' => ['nullable', 'numeric', 'between:1,5'],
             'order' => ['nullable', 'integer', 'min:0'],
             'status' => ['required', 'in:active,inactive'],
-            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif|max:4096']
+            'image' => [$id ? 'nullable' : 'required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:4096']
         ];
-
-        if (!$id) {
-            $validation['image'] = ['required', 'image', 'mimes:jpeg,png,jpg,gif|max:4096'];
-        }
 
         return $validation;
     }

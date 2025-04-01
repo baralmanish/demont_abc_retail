@@ -39,7 +39,10 @@ export default function Testimonials() {
                 <td className="px-6 py-3">
                     <img src={row.image} alt={row.name} className="aspect-square w-12 object-fill" />
                 </td>
-                <td className="px-6 py-3">{row.name}</td>
+                <td className="px-6 py-3">
+                    <strong>{row.name}</strong>
+                    <div>{row.review}</div>
+                </td>
                 <td className="px-6 py-3 text-center">
                     <StarRating rating={row.rating} />
                 </td>
@@ -85,7 +88,7 @@ export default function Testimonials() {
                                 Image
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                Name
+                                Name / Review
                             </th>
                             <th scope="col" className="w-36 px-6 py-3 text-center">
                                 Rating

@@ -1,4 +1,3 @@
-import { Transition } from '@headlessui/react';
 import { Head, router, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
 
@@ -13,22 +12,25 @@ import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 
 import { BreadcrumbItem, SharedData } from '@/types';
-import { Testimonial, TestimonialForm } from '@/types/testimonial';
+import { Category } from '@/types/category';
+import { Product, ProductForm } from '@/types/product';
+import { Transition } from '@headlessui/react';
 
 interface InertiaPage extends SharedData {
     id?: string;
-    testimonial?: Testimonial;
+    product?: Product;
+    categories: Category[];
 }
 
-export default function CategoriesForm() {
-    const { id, testimonial } = usePage<InertiaPage>().props;
+export default function ProductsForm() {
+    const { id, product, categories } = usePage<InertiaPage>().props;
 
-    const { data, setData, post, errors, processing, recentlySuccessful, reset } = useForm<Required<TestimonialForm>>({
-        name: testimonial?.name || '',
-        review: testimonial?.review || '',
-        rating: testimonial?.rating || 5,
-        order: testimonial?.order || 0,
-        status: testimonial?.status || 'active',
+    const { data, setData, post, errors, processing, recentlySuccessful, reset } = useForm<Required<ProductForm>>({
+        name: product?.name || '',
+        description: product?.description || '',
+        price: product?.price || '',
+        status: product?.status || 'active',
+        category_id: product?.category_id || null,
         image: null,
     });
     const [image, setImage] = useState<string | null>(null);
@@ -40,10 +42,10 @@ export default function CategoriesForm() {
         },
         {
             title: 'Categories',
-            href: '/dashboard/testimonials',
+            href: '/dashboard/categories',
         },
         {
-            title: testimonial ? `Edit Testimonial` : 'Add Testimonial',
+            title: product ? `Edit ${product.name}` : 'Add Category',
             href: '',
         },
     ];
@@ -52,14 +54,14 @@ export default function CategoriesForm() {
         e.preventDefault();
 
         if (id) {
-            post(route('dashboard.testimonials.update', id), {
+            post(route('dashboard.products.update', id), {
                 preserveScroll: true,
-                onSuccess: () => console.log('Testimonial added successfully!'),
+                onSuccess: () => console.log('Product added successfully!'),
             });
         } else {
-            post(route('dashboard.testimonials.create'), {
+            post(route('dashboard.products.create'), {
                 preserveScroll: true,
-                onSuccess: () => console.log('Testimonial added successfully!'),
+                onSuccess: () => console.log('Product added successfully!'),
             });
         }
     };
@@ -76,7 +78,7 @@ export default function CategoriesForm() {
     };
 
     const renderImage = () => {
-        const thisImage = image || testimonial?.image || '';
+        const thisImage = image || product?.image || '';
 
         if (!thisImage) return;
 
@@ -101,43 +103,62 @@ export default function CategoriesForm() {
                             autoComplete="name"
                             placeholder="Name"
                         />
+
                         <InputError message={errors.name} />
                     </div>
                     <div className="grid gap-2">
-                        <Label htmlFor="review">
-                            Review<span className="pl-0.5 text-red-600 dark:text-red-400">*</span>
+                        <Label htmlFor="description">
+                            Description
+                            <span className="pl-0.5 text-red-600 dark:text-red-400">*</span>
                         </Label>
                         <Textarea
-                            id="review"
+                            id="description"
                             rows={3}
+                            required
                             className="mt-1 block w-full"
-                            value={data.review}
-                            onChange={(e) => setData('review', e.target.value)}
-                            autoComplete="review"
-                            placeholder="Review"
+                            value={data.description}
+                            onChange={(e) => setData('description', e.target.value)}
+                            autoComplete="description"
+                            placeholder="Description"
                         />
-                        <InputError message={errors.review} />
+
+                        <InputError message={errors.description} />
                     </div>
                     <div className="grid gap-2">
-                        <Label htmlFor="rating">
-                            Rating<span className="pl-0.5 text-red-600 dark:text-red-400">*</span>
+                        <Label htmlFor="price">
+                            Price (AED)
+                            <span className="pl-0.5 text-red-600 dark:text-red-400">*</span>
                         </Label>
-                        <Select
-                            value={data.rating.toString()} // Convert number to string if needed
-                            onValueChange={(value) => setData('rating', Number(value))}
-                        >
+                        <Input
+                            id="price"
+                            type="number"
+                            className="mt-1 block w-full"
+                            value={data.price}
+                            onChange={(e) => setData('price', e.target.value)}
+                            required
+                            autoComplete="price"
+                            placeholder="Price"
+                        />
+
+                        <InputError message={errors.name} />
+                    </div>
+                    <div className="grid gap-2">
+                        <Label htmlFor="category_id">
+                            Category<span className="pl-0.5 text-red-600 dark:text-red-400">*</span>
+                        </Label>
+                        <Select value={`${data.category_id}`} onValueChange={(value) => setData('category_id', Number(value))}>
                             <SelectTrigger>
-                                <SelectValue placeholder="Select Rating" />
+                                <SelectValue placeholder="Select Category" />
                             </SelectTrigger>
                             <SelectContent>
-                                {[1, 2, 3, 4, 5].map((num) => (
-                                    <SelectItem key={num} value={num.toString()}>
-                                        {num} Stars
+                                {categories.map((cat) => (
+                                    <SelectItem key={cat.id} value={`${cat.id}`}>
+                                        {cat.name}
                                     </SelectItem>
                                 ))}
                             </SelectContent>
                         </Select>
-                        <InputError message={errors.rating} />
+                        <InputError message={errors.category_id} />
                     </div>
                     <div className="grid gap-2">
                         <Label htmlFor="status">
@@ -163,7 +184,7 @@ export default function CategoriesForm() {
                             <span className="pl-0.5 text-red-600 dark:text-red-400">*</span>
                         </Label>
                         <FileInput
-                            required={!testimonial?.image}
+                            required={!product?.image}
                             id="image"
                             className="mt-1 block w-full"
                             accept="image/png, image/jpeg"
@@ -172,7 +193,6 @@ export default function CategoriesForm() {
                         <InputError className="mt-2" message={errors.image} />
                         {renderImage()}
                     </div>
-
                     <div className="flex items-center gap-4">
                         <Button type="reset" variant="secondary" onClick={() => reset()}>
                             Reset
@@ -195,9 +215,9 @@ export default function CategoriesForm() {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title={testimonial ? `Edit Testimonial` : 'Add Testimonial'} />
+            <Head title={product ? `Edit ${product.name}` : 'Add Category'} />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-                <PageHeader title={testimonial ? `Edit Testimonial` : 'Add Testimonial'} onBack={() => router.get(route('dashboard.categories'))} />
+                <PageHeader title={product ? `Edit ${product.name}` : 'Add Category'} onBack={() => router.get(route('dashboard.products'))} />
                 {renderForm()}
             </div>
         </AppLayout>

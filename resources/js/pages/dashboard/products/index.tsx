@@ -2,12 +2,13 @@ import { Head, Link, router, usePage } from '@inertiajs/react';
 import { PencilIcon, PlusIcon, Trash2 } from 'lucide-react';
 
 import { PageHeader } from '@/components/page-header';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import AppLayout from '@/layouts/app-layout';
 
 import { BreadcrumbItem, SharedData } from '@/types';
-import { Category } from '@/types/category';
+import { Product } from '@/types/product';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -15,36 +16,37 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '/dashboard',
     },
     {
-        title: 'Categories',
-        href: '/dashboard/categories',
+        title: 'Products',
+        href: '/dashboard/products',
     },
 ];
 
 interface InertiaPage extends SharedData {
-    categories: Category[];
+    products: Product[];
 }
 
-export default function Categories() {
-    const { categories } = usePage<InertiaPage>().props;
+export default function Products() {
+    const { products } = usePage<InertiaPage>().props;
 
     const handleDelete = (id: number) => {
-        router.delete(route('dashboard.categories.delete', { id }));
+        router.delete(route('dashboard.products.delete', { id }));
     };
 
-    const renderTableRow = (row: Category) => {
+    const renderTableRow = (row: Product) => {
         return (
             <tr key={row.id} className="border-b border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
                 <td className="px-6 py-3">
                     <img src={row.image} alt={row.name} className="aspect-square w-12 object-fill" />
                 </td>
-                <td className="px-6 py-3">
-                    <strong>{row.name}</strong>
-                    <br />
-                    {row.description}
+                <td className="px-6 py-3">{row.name}</td>
+                <td className="px-6 py-3 text-right">{row.price_formatted}</td>
+                <td className="px-6 py-3">{row.category.name}</td>
+                <td className="px-6 py-3 text-center">
+                    <Badge variant={row.status === 'active' ? 'success' : 'error'}>{row.status}</Badge>
                 </td>
                 <td className="px-6 py-3 text-center">
                     <div className="flex flex-row items-center justify-center gap-3">
-                        <Link href={route('dashboard.categories.edit', { id: row.id })}>
+                        <Link href={route('dashboard.products.edit', { id: row.id })}>
                             <PencilIcon className="h-4 w-4 cursor-pointer opacity-45 hover:opacity-75" />
                         </Link>
                         <Dialog>
@@ -52,8 +54,8 @@ export default function Categories() {
                                 <Trash2 className="h-4 w-4 cursor-pointer opacity-45 hover:opacity-75" />
                             </DialogTrigger>
                             <DialogContent>
-                                <DialogTitle>Are you sure you want to delete this category?</DialogTitle>
-                                <DialogDescription>Once category: {row.name} is deleted, it cannot be reverted.</DialogDescription>
+                                <DialogTitle>Are you sure you want to delete this product?</DialogTitle>
+                                <DialogDescription>Once product: {row.name} is deleted, it cannot be reverted.</DialogDescription>
                                 <DialogFooter className="gap-2">
                                     <DialogClose asChild>
                                         <Button variant="secondary">Cancel</Button>
@@ -81,14 +83,23 @@ export default function Categories() {
                                 Image
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                Name / Description
+                                Name
+                            </th>
+                            <th scope="col" className="px-6 py-3 text-right">
+                                Price
+                            </th>
+                            <th scope="col" className="w-24 px-6 py-3 text-center">
+                                Category
+                            </th>
+                            <th scope="col" className="w-24 px-6 py-3 text-center">
+                                Status
                             </th>
                             <th scope="col" className="w-30 px-6 py-3 text-center">
                                 Action
                             </th>
                         </tr>
                     </thead>
-                    <tbody>{categories.map(renderTableRow)}</tbody>
+                    <tbody>{products.map(renderTableRow)}</tbody>
                 </table>
             </div>
         );
@@ -96,7 +107,7 @@ export default function Categories() {
 
     const renderHeaderExtra = () => {
         return (
-            <Button size="sm" variant="secondary" onClick={() => router.get(route('dashboard.categories.add'))}>
+            <Button size="sm" variant="secondary" onClick={() => router.get(route('dashboard.products.add'))}>
                 <PlusIcon />
                 Add
             </Button>
@@ -105,9 +116,9 @@ export default function Categories() {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Categories" />
+            <Head title="Products" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-                <PageHeader title="Categories" actions={renderHeaderExtra()} />
+                <PageHeader title="Products" actions={renderHeaderExtra()} />
                 {renderTable()}
             </div>
         </AppLayout>

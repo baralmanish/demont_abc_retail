@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Auth\ProductController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\TestimonialController;
 use App\Http\Controllers\Auth\VerifyEmailController;
@@ -63,9 +64,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::controller(DashboardController::class)->group(function () {
         Route::get('/dashboard', 'index')->name('dashboard');
 
-        Route::get('/dashboard/products', 'products')->name('dashboard.products');
         Route::get('/dashboard/orders', 'orders')->name('dashboard.orders');
-        
+
         Route::get('/dashboard/seo', 'seo')->name('dashboard.seo');
         Route::get('/dashboard/social-links', 'socialLinks')->name('dashboard.socialLinks');
         Route::post('/dashboard/social-links', 'socialLinksUpdate')->name('dashboard.socialLinks.update');
@@ -78,6 +78,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/dashboard/categories/add', 'create')->name('dashboard.categories.create');
         Route::post('/dashboard/categories/{id}/edit', 'update')->name('dashboard.categories.update');
         Route::delete('/dashboard/categories/{id}/delete', 'delete')->name('dashboard.categories.delete');
+    });
+
+    Route::controller(ProductController::class)->group(function () {
+        Route::get('/dashboard/products', 'index')->name('dashboard.products');
+        Route::get('/dashboard/products/add', 'add')->name('dashboard.products.add');
+        Route::get('/dashboard/products/{id}/edit', 'edit')->name('dashboard.products.edit');
+        Route::post('/dashboard/products/add', 'create')->name('dashboard.products.create');
+        Route::post('/dashboard/products/{id}/edit', 'update')->name('dashboard.products.update');
+        Route::delete('/dashboard/products/{id}/delete', 'delete')->name('dashboard.products.delete');
     });
 
     Route::controller(TestimonialController::class)->group(function () {
