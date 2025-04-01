@@ -16,6 +16,11 @@ class Payment extends Model
         'payment_method'
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
     public function order()
     {
         return $this->belongsTo(Order::class);

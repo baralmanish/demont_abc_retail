@@ -65,6 +65,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/dashboard', 'index')->name('dashboard');
 
         Route::get('/dashboard/order/{id}', 'order')->name('dashboard.order');
+        Route::post('/dashboard/order/{id}/update-status', 'updateOrderStatus')->name('dashboard.order.updateStatus');
+        Route::post('/dashboard/order/{id}/payment/{paymentId}/update-status', 'updatePaymentStatus')->name('dashboard.payment.updateStatus');
 
         Route::get('/dashboard/seo', 'seo')->name('dashboard.seo');
         Route::get('/dashboard/social-links', 'socialLinks')->name('dashboard.socialLinks');

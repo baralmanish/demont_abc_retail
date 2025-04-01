@@ -38,11 +38,16 @@ export default function Products() {
                 <td className="px-6 py-3">
                     <img src={row.image} alt={row.name} className="aspect-square w-12 object-fill" />
                 </td>
-                <td className="px-6 py-3">{row.name}</td>
-                <td className="px-6 py-3 text-right">{row.price_formatted}</td>
+                <td className="px-6 py-3">
+                    <strong>{row.name}</strong>
+                    <div className="line-clamp-1">{row.description}</div>
+                </td>
                 <td className="px-6 py-3">{row.category.name}</td>
+                <td className="px-6 py-3 text-right">{row.price_formatted}</td>
                 <td className="px-6 py-3 text-center">
-                    <Badge variant={row.status === 'active' ? 'success' : 'error'}>{row.status}</Badge>
+                    <Badge className="uppercase" variant={row.status === 'active' ? 'success' : 'error'}>
+                        {row.status}
+                    </Badge>
                 </td>
                 <td className="px-6 py-3 text-center">
                     <div className="flex flex-row items-center justify-center gap-3">
@@ -98,11 +103,11 @@ export default function Products() {
                             <th scope="col" className="px-6 py-3">
                                 Name
                             </th>
-                            <th scope="col" className="px-6 py-3 text-right">
-                                Price
-                            </th>
-                            <th scope="col" className="w-24 px-6 py-3 text-center">
+                            <th scope="col" className="px-6 py-3">
                                 Category
+                            </th>
+                            <th scope="col" className="w-40 px-6 py-3 text-right">
+                                Price
                             </th>
                             <th scope="col" className="w-24 px-6 py-3 text-center">
                                 Status

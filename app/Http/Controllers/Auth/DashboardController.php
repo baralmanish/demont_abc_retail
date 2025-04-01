@@ -7,6 +7,7 @@ use App\Models\Category;
 use Inertia\Inertia;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Payment;
 use App\Models\Product;
 use App\Models\SocialLink;
 use Illuminate\Http\Request;
@@ -40,10 +41,44 @@ class DashboardController extends Controller
     public function order($id)
     {
         $orderData = Order::with('orderItems.product', 'payment')->findOrFail($id);
+        $orderData['ordered_by'] = $orderData->user->name;
+        $orderData['quantity'] = $orderData->orderItems->sum('quantity');
+        $orderData['total_price'] = $orderData->total_price_formatted;
+        $orderData['order_date'] = $orderData->created_at->format('Y-m-d H:i:s');
 
         return Inertia::render('dashboard/order', [
             'order' => $orderData
         ]);
+    }
+
+    public function updateOrderStatus(Request $request, $id)
+    {
+        $orderData = Order::findOrFail($id);
+
+        // Validate the request data
+        $validatedData = $request->validate([
+            'status' => 'required|in:pending,processing,completed,cancelled',
+        ]);
+
+        // Update only the status field
+        $orderData->update($validatedData);
+
+        return Inertia::location(route('dashboard.order', ['id' => $id]));
+    }
+
+    public function updatePaymentStatus(Request $request, $id, $paymentId)
+    {
+        $paymentData = Payment::findOrFail($paymentId);
+
+        // Validate the request data
+        $validatedData = $request->validate([
+            'payment_status' => 'required|in:pending,paid,failed',
+        ]);
+
+        // Update only the status field
+        $paymentData->update($validatedData);
+
+        return Inertia::location(route('dashboard.order', ['id' => $id]));
     }
 
     public function seo()
@@ -75,6 +110,6 @@ class DashboardController extends Controller
 
         $socialLink->update($validatedData);
 
-        return redirect()->route('dashboard.socialLinks')->with('success', 'Category updated successfully');
+        return redirect()->route('dashboard.socialLinks')->with('success', 'Social links updated successfully');
     }
 }

@@ -41,7 +41,7 @@ export default function Testimonials() {
                 </td>
                 <td className="px-6 py-3">
                     <strong>{row.name}</strong>
-                    <div>{row.review}</div>
+                    <div className="line-clamp-1">{row.review}</div>
                 </td>
                 <td className="px-6 py-3 text-center">
                     <StarRating rating={row.rating} />

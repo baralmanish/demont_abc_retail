@@ -5,7 +5,8 @@ import { CardStats } from '@/components/card-stats';
 import { Badge } from '@/components/ui/badge';
 import AppLayout from '@/layouts/app-layout';
 
-import { getOrderStatusVariants } from '@/lib/utils';
+import { PAYMENT_STATUS } from '@/lib/enums';
+import { getOrderStatusVariants, getPaymentStatusVariants } from '@/lib/utils';
 import { BreadcrumbItem, SharedData } from '@/types';
 import { Order } from '@/types/order';
 
@@ -26,6 +27,8 @@ interface InertiaPage extends SharedData {
 export default function Dashboard() {
     const { totalCategories, totalProducts, totalOrder, orders } = usePage<InertiaPage>().props;
 
+    console.log('orders', orders);
+
     const renderStats = () => {
         return (
             <div className="grid auto-rows-min gap-4 md:grid-cols-3">
@@ -44,12 +47,23 @@ export default function Dashboard() {
                 <td className="px-6 py-3 text-right">{row.quantity}</td>
                 <td className="px-6 py-3 text-right">{row.total_price}</td>
                 <td className="px-6 py-3">
-                    <Badge variant={getOrderStatusVariants(row.status)}>{row.status}</Badge>
+                    <Badge variant={getOrderStatusVariants(row.status)} className="uppercase">
+                        {row.status}
+                    </Badge>
+                </td>
+                <td className="px-6 py-3">
+                    {row.payment && (
+                        <Badge variant={getPaymentStatusVariants(row.payment.payment_status as PAYMENT_STATUS)} className="uppercase">
+                            {row.payment.payment_status}
+                        </Badge>
+                    )}
                 </td>
                 <td className="px-6 py-3 text-center">
-                    <Link href={route('dashboard.order', { id: row.id })}>
-                        <Eye className="h-4 w-4 cursor-pointer opacity-45 hover:opacity-75" />
-                    </Link>
+                    <div className="flex flex-row items-center justify-center gap-3">
+                        <Link href={route('dashboard.order', { id: row.id })}>
+                            <Eye className="h-4 w-4 cursor-pointer opacity-45 hover:opacity-75" />
+                        </Link>
+                    </div>
                 </td>
             </tr>
         );
@@ -74,22 +88,25 @@ export default function Dashboard() {
                 <table className="w-full text-left text-sm text-gray-500 rtl:text-right dark:text-gray-400">
                     <thead className="bg-gray-50 text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
                         <tr>
-                            <th scope="col" className="px-6 py-3">
+                            <th scope="col" className="w-48 px-6 py-3">
                                 Ordered Date
                             </th>
                             <th scope="col" className="px-6 py-3">
                                 Ordered By
                             </th>
-                            <th scope="col" className="px-6 py-3 text-right">
-                                Quantity
+                            <th scope="col" className="w-20 px-6 py-3 text-right">
+                                Qty
                             </th>
-                            <th scope="col" className="px-6 py-3 text-right">
-                                Amount
+                            <th scope="col" className="w-40 px-6 py-3 text-right">
+                                Price
                             </th>
-                            <th scope="col" className="px-6 py-3">
+                            <th scope="col" className="w-30 px-6 py-3">
                                 Status
                             </th>
-                            <th scope="col" className="px-6 py-3">
+                            <th scope="col" className="w-30 px-6 py-3">
+                                Payment
+                            </th>
+                            <th scope="col" className="w-24 px-6 py-3">
                                 View
                             </th>
                         </tr>

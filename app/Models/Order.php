@@ -17,7 +17,8 @@ class Order extends Model
     ];
 
     protected $hidden = [
-        'updated_at'
+        'created_at',
+        'updated_at',
     ];
 
     public function user()
@@ -43,7 +44,7 @@ class Order extends Model
     public static function getOrders()
     {
         if (Auth::user()->role === 'ADMIN') {
-            return self::with('user', 'orderItems')
+            return self::with('user', 'orderItems', 'payment')
             ->get(['id', 'user_id', 'total_price', 'status', 'created_at'])
             ->map(function ($order) {
                 return [
@@ -54,6 +55,7 @@ class Order extends Model
                     'quantity' => $order->orderItems->sum('quantity'),
                     'total_price' => $order->total_price_formatted,
                     'status' => $order->status,
+                    'payment' => $order->payment,
                 ];
             });
         } else {
@@ -66,6 +68,7 @@ class Order extends Model
                     'quantity' => $order->orderItems->sum('quantity'),
                     'total_price' => $order->total_price_formatted,
                     'status' => $order->status,
+                    'payment' => $order->payment,
                 ];
             });
         }

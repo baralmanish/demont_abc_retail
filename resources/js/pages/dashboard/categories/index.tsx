@@ -39,8 +39,7 @@ export default function Categories() {
                 </td>
                 <td className="px-6 py-3">
                     <strong>{row.name}</strong>
-                    <br />
-                    {row.description}
+                    <div className="line-clamp-1">{row.description}</div>
                 </td>
                 <td className="px-6 py-3 text-center">
                     <div className="flex flex-row items-center justify-center gap-3">
