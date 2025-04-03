@@ -28,7 +28,7 @@ export default function AppHeader() {
                         <Logo />
                     </Offcanvas.Header>
                     <Offcanvas.Body className="pt-0">
-                        <Nav className="justify-content-end flex-grow-1 pe-3 text-lg font-medium">
+                        <Nav className="justify-content-end flex-grow-1 gap-0.5 pe-3 text-lg font-medium">
                             <Link href="#action1" className="nav-link">
                                 Home
                             </Link>
@@ -50,9 +50,9 @@ export default function AppHeader() {
                     <Search className="h-6 w-6 cursor-pointer text-gray-600 hover:text-green-600" />
 
                     {/* User Account */}
-                    <Link href={auth.user ? route('dashboard') : route('login')} title={auth.user ? 'My Account' : 'Login'}>
+                    <a target="_blank" href={auth.user ? route('dashboard') : route('login')} title={auth.user ? 'My Account' : 'Login'}>
                         <User className="h-6 w-6 cursor-pointer text-gray-600 hover:text-green-600" />
-                    </Link>
+                    </a>
 
                     {/* Cart Icon with Badge */}
                     <Link href="/cart" className="relative">

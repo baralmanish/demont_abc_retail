@@ -3,7 +3,7 @@ import { type ReactNode } from 'react';
 
 import SSRProvider from 'react-bootstrap/SSRProvider';
 
-import AppHeader from '@/layouts/fontend/header';
+import AppHeader from '@/layouts/frontend/header';
 import { SharedData } from '@/types';
 
 import 'bootstrap/dist/css/bootstrap.min.css';

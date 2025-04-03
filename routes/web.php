@@ -1,11 +1,12 @@
 <?php
 
+use App\Http\Controllers\Frontend\HomeController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('frontend/home');
-})->name('home');
+Route::controller(HomeController::class)->group(function () {
+    Route::get('/', 'home')->name('home');
+});
 
 Route::get('/welcome', function () {
     return Inertia::render('welcome');

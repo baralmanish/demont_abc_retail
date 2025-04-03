@@ -1,11 +1,15 @@
 import { type SharedData } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 
-import AppHero from '@/layouts/fontend/hero';
 import AppLayoutProps from '@/layouts/frontend-layout';
+import BrandsScroll from '@/layouts/frontend/brands-scroll';
+import CategoriesScroll from '@/layouts/frontend/categories-scroll';
+import AppHero from '@/layouts/frontend/hero';
 
 export default function Home() {
     const { auth } = usePage<SharedData>().props;
+
+    console.log('>>> auth', auth);
 
     return (
         <>
@@ -16,9 +20,10 @@ export default function Home() {
 
             <AppLayoutProps>
                 <AppHero />
+                <CategoriesScroll />
                 <div>dfa</div>
                 <div>dfa</div>
-                <div>dfa</div>
+                <BrandsScroll />
                 <div>dfa</div>
             </AppLayoutProps>
         </>
