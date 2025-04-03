@@ -1,72 +1,66 @@
 import { Link, usePage } from '@inertiajs/react';
+import { Search, ShoppingBag, User } from 'lucide-react';
 
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import Offcanvas from 'react-bootstrap/Offcanvas';
+
+import { Logo } from '@/components/fe_ui/logo';
 import { SharedData } from '@/types';
-import { Menu, Search, ShoppingBag, User } from 'lucide-react';
+
+const expand = 'lg';
 
 export default function AppHeader() {
     const { auth } = usePage<SharedData>().props;
 
     return (
-        <div className="header-group">
-            <header className="header header-main-area">
-                <div className="header-area header-sticky">
-                    <div className="container-fluid">
-                        <div className="header-main">
-                            <div className="logo header-element">
-                                <Link href="" className="header-log">
-                                    ABC Retail
-                                </Link>
-                            </div>
-                            <div className="header-element main-menu-area">
-                                <nav className="mainwrap">
-                                    <ul className="list-unstyled main-menu">
-                                        <li className="menu-link">
-                                            <Link href="" className="link-title">
-                                                Home
-                                            </Link>
-                                        </li>
-                                        <li className="menu-link">
-                                            <Link href="" className="link-title">
-                                                About
-                                            </Link>
-                                        </li>
-                                        <li className="menu-link">
-                                            <Link href="" className="link-title">
-                                                Products
-                                            </Link>
-                                        </li>
-                                        <li className="menu-link">
-                                            <Link href="" className="link-title">
-                                                Contact
-                                            </Link>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div>
-                            <div className="header-element right-block-box">
-                                <ul className="shop-element">
-                                    <li className="toggler-wrap">
-                                        <Menu />
-                                    </li>
-                                    <li className="search-wrap search-wrap-mobile">
-                                        <Search />
-                                    </li>
-                                    <li className="user-wrap ele-wrap">
-                                        <Link href={route('login')}>
-                                            <User />
-                                        </Link>
-                                    </li>
-                                    <li className="user-wrap ele-wrap">
-                                        <Link href="">
-                                            <ShoppingBag />
-                                        </Link>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+        <Navbar collapseOnSelect key={expand} expand={expand} sticky="top" className="bg-white">
+            <Container className="my-2.5">
+                <Logo />
+                <Navbar.Offcanvas
+                    style={{ width: 300 }}
+                    id={`offcanvasNavbar-expand-${expand}`}
+                    aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
+                    placement="start"
+                >
+                    <Offcanvas.Header closeButton>
+                        <Logo />
+                    </Offcanvas.Header>
+                    <Offcanvas.Body className="pt-0">
+                        <Nav className="justify-content-end flex-grow-1 pe-3 text-lg font-medium">
+                            <Link href="#action1" className="nav-link">
+                                Home
+                            </Link>
+                            <Link href="#action1" className="nav-link">
+                                About
+                            </Link>
+                            <Link href="#action1" className="nav-link">
+                                Products
+                            </Link>
+                            <Link href="#action1" className="nav-link">
+                                Contact
+                            </Link>
+                        </Nav>
+                    </Offcanvas.Body>
+                </Navbar.Offcanvas>
+                <div className="flex items-center space-x-4">
+                    <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
+
+                    <Search className="h-6 w-6 cursor-pointer text-gray-600 hover:text-green-600" />
+
+                    {/* User Account */}
+                    <Link href={auth.user ? route('dashboard') : route('login')} title={auth.user ? 'My Account' : 'Login'}>
+                        <User className="h-6 w-6 cursor-pointer text-gray-600 hover:text-green-600" />
+                    </Link>
+
+                    {/* Cart Icon with Badge */}
+                    <Link href="/cart" className="relative">
+                        <ShoppingBag className="h-6 w-6 cursor-pointer text-gray-600 hover:text-green-600" />
+                        <span className="absolute -top-2 -right-2 rounded-full bg-orange-500 px-2 text-xs font-bold text-white">2</span>
+                    </Link>
                 </div>
-            </header>
-        </div>
+            </Container>
+        </Navbar>
     );
 }

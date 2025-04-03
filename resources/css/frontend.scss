@@ -1,0 +1,53 @@
+html,
+html.dark {
+    background-color: white;
+}
+
+body {
+    color: black;
+    background-color: white;
+}
+
+.navbar-toggler {
+    border: none;
+    outline: 0;
+    box-shadow: none;
+
+    &:focus {
+        text-decoration: none;
+        outline: 0;
+        box-shadow: none;
+    }
+}
+
+.rounded-md {
+    border-radius: var(--radius-md) /* calc(var(--radius) - 2px) */;
+}
+
+.my-2\.5 {
+    margin-block: calc(var(--spacing) * 2.5) /* 0.625rem = 10px */;
+}
+
+.max-sm\:gap-1 {
+    @media (width < 40rem) {
+        gap: calc(var(--spacing) * 1) !important;
+    }
+}
+
+.max-sm\:gap-2 {
+    @media (width < 40rem /* 640px */) {
+        gap: calc(var(--spacing) * 2) !important /* 0.5rem = 8px */;
+    }
+}
+
+.text-lg {
+    font-size: var(--text-lg) /* 1.125rem = 18px */;
+    line-height: var(--tw-leading, var(--text-lg--line-height) /* calc(1.75 / 1.125) ≈ 1.5556 */);
+}
+
+.lg\:text-lg {
+    @media (width >= 64rem /* 1024px */) {
+        font-size: var(--text-lg) /* 1.125rem = 18px */;
+        line-height: var(--tw-leading, var(--text-lg--line-height) /* calc(1.75 / 1.125) ≈ 1.5556 */);
+    }
+}

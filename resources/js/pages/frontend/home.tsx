@@ -1,6 +1,7 @@
 import { type SharedData } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 
+import AppHero from '@/layouts/fontend/hero';
 import AppLayoutProps from '@/layouts/frontend-layout';
 
 export default function Home() {
@@ -14,6 +15,10 @@ export default function Home() {
             </Head>
 
             <AppLayoutProps>
+                <AppHero />
+                <div>dfa</div>
+                <div>dfa</div>
+                <div>dfa</div>
                 <div>dfa</div>
             </AppLayoutProps>
         </>
