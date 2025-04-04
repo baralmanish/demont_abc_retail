@@ -29,6 +29,11 @@ body {
     }
 }
 
+.navbar-nav .nav-link.active,
+.navbar-nav .nav-link.show {
+    color: var(--brand-color);
+}
+
 .rounded-md {
     border-radius: var(--radius-md) /* calc(var(--radius) - 2px) */;
 }

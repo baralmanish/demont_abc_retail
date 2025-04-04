@@ -29,7 +29,7 @@ export default function Home() {
                             <span className="font-black">New Arrivals</span>
                         </h2>
                     </div>
-                    <div className="row g-4">
+                    <div className="row g-4 justify-content-md-center">
                         {products.map((item) => (
                             <div key={item.id} className="col-xl-3 col-lg-4 col-sm-6">
                                 <ProductCard href="#" imagePath={item.image} product={{ name: item.name, price: item.price_formatted }} />

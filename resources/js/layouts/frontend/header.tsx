@@ -14,8 +14,11 @@ import { SharedData } from '@/types';
 const expand = 'lg';
 
 export default function AppHeader() {
-    const { auth } = usePage<SharedData>().props;
+    const { auth, url } = usePage<SharedData>().props;
     const [y, setY] = useState(window.scrollY);
+
+    console.log('>> url', url);
+    console.log('>> rrr', route('about'));
 
     useEffect(() => {
         const handleScroll = () => setY(window.scrollY);
@@ -41,16 +44,16 @@ export default function AppHeader() {
                     </Offcanvas.Header>
                     <Offcanvas.Body className="pt-0">
                         <Nav className="justify-content-end flex-grow-1 gap-0.5 pe-3 text-lg font-medium">
-                            <Link href={route('home')} className="nav-link">
+                            <Link href={route('home')} className={cn('nav-link', url === route('home') && 'active')}>
                                 Home
                             </Link>
-                            <Link href={route('about')} className="nav-link">
+                            <Link href={route('about')} className={cn('nav-link', url === route('about') && 'active')}>
                                 About
                             </Link>
-                            <Link href={route('products')} className="nav-link">
+                            <Link href={route('products')} className={cn('nav-link', url === route('products') && 'active')}>
                                 Products
                             </Link>
-                            <Link href={route('contact')} className="nav-link">
+                            <Link href={route('contact')} className={cn('nav-link', url === route('contact') && 'active')}>
                                 Contact
                             </Link>
                         </Nav>
@@ -59,7 +62,7 @@ export default function AppHeader() {
                 <div className="flex items-center space-x-4">
                     <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
 
-                    <Search className="h-6 w-6 cursor-pointer text-gray-600 hover:text-green-600" />
+                    <Search className="hidden h-6 w-6 cursor-pointer text-gray-600 hover:text-green-600" />
 
                     {/* User Account */}
                     <a target="_blank" href={auth.user ? route('dashboard') : route('login')} title={auth.user ? 'My Account' : 'Login'}>

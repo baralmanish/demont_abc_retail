@@ -10,7 +10,7 @@ class HomeController extends Controller
 {
     public function home()
     {
-        $products = Product::latest()->take(8)->get();
+        $products = Product::where('status', 'active')->latest()->take(8)->get();
 
         return Inertia::render('frontend/home', [
             'products' => $products,
@@ -27,5 +27,13 @@ class HomeController extends Controller
     {
 
         return Inertia::render('frontend/contact');
+    }
+
+    public function product()
+    {
+        $products = Product::where('status', 'active')->latest()->get();
+        return Inertia::render('frontend/product', [
+            'products' => $products,
+        ]);
     }
 }

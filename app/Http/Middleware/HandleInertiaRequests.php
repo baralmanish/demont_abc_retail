@@ -40,7 +40,7 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        $categories = Category::all();
+        $categories = Category::orderBy('name', 'asc')->get();
         $socialLink = SocialLink::first();
         $testimonials = Testimonial::where('status', 'active')->get();
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
@@ -62,10 +62,11 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
-            'ziggy' => fn (): array => [
+            'url' => $request->url(),
+            'ziggy' => app()->environment('local') ? fn (): array => [
                 ...(new Ziggy())->toArray(),
                 'location' => $request->url(),
-            ]
+            ] : null
         ];
     }
 }
