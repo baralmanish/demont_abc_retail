@@ -41,16 +41,16 @@ export default function AppHeader() {
                     </Offcanvas.Header>
                     <Offcanvas.Body className="pt-0">
                         <Nav className="justify-content-end flex-grow-1 gap-0.5 pe-3 text-lg font-medium">
-                            <Link href="#action1" className="nav-link">
+                            <Link href={route('home')} className="nav-link">
                                 Home
                             </Link>
-                            <Link href="#action1" className="nav-link">
+                            <Link href={route('about')} className="nav-link">
                                 About
                             </Link>
-                            <Link href="#action1" className="nav-link">
+                            <Link href={route('products')} className="nav-link">
                                 Products
                             </Link>
-                            <Link href="#action1" className="nav-link">
+                            <Link href={route('contact')} className="nav-link">
                                 Contact
                             </Link>
                         </Nav>

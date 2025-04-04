@@ -5,9 +5,9 @@ import AppLayoutProps from '@/layouts/frontend-layout';
 import BrandsScroll from '@/layouts/frontend/brands-scroll';
 import CategoriesScroll from '@/layouts/frontend/categories-scroll';
 import AppHero from '@/layouts/frontend/hero';
+import Testimonials from '@/layouts/frontend/testimonials';
 
 import { ProductCard } from '@/components/fe_ui/product-card';
-import Testimonials from '@/layouts/frontend/testimonials';
 import { Product } from '@/types/product';
 
 interface InertiaPage extends SharedData {
@@ -16,7 +16,6 @@ interface InertiaPage extends SharedData {
 
 export default function Home() {
     const { products } = usePage<InertiaPage>().props;
-    console.log('>>> products', products);
 
     return (
         <AppLayoutProps>

@@ -16,4 +16,16 @@ class HomeController extends Controller
             'products' => $products,
         ]);
     }
+
+    public function about()
+    {
+
+        return Inertia::render('frontend/about');
+    }
+
+    public function contact()
+    {
+
+        return Inertia::render('frontend/contact');
+    }
 }

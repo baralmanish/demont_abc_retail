@@ -6,6 +6,9 @@ use Inertia\Inertia;
 
 Route::controller(HomeController::class)->group(function () {
     Route::get('/', 'home')->name('home');
+    Route::get('/about-us', 'about')->name('about');
+    Route::get('/contact-us', 'contact')->name('contact');
+    Route::get('/products', 'home')->name('products');
 });
 
 Route::get('/welcome', function () {
