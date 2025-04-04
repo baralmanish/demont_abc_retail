@@ -38,6 +38,7 @@ export interface SharedData {
     quote: { message: string; author: string };
     auth: Auth;
     ziggy: Config & { location: string };
+    url: string;
     site: {
         socialLink: ISocialLinks;
         categories: Category[];

@@ -1,9 +1,10 @@
-import { Plus } from 'lucide-react';
+import { ShoppingBasket } from 'lucide-react';
 
 interface ProductCardProps {
     href: string;
     imagePath: string;
     product: {
+        id: number;
         name: string;
         price: string;
     };
@@ -24,7 +25,7 @@ export function ProductCard({ href, imagePath, product }: ProductCardProps) {
                 </div>
                 <div className="product-cart-btn">
                     <div className="product-btn">
-                        <Plus />
+                        <ShoppingBasket />
                         Add to Cart
                     </div>
                 </div>

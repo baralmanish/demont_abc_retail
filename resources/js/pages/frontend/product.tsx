@@ -18,15 +18,16 @@ interface InertiaPage extends SharedData {
 export default function Product() {
     const { products, site } = usePage<InertiaPage>().props;
     const prices = products.map((product) => Number(product.price));
+    const maxPrice = Math.max(...prices) + 5;
 
     const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
-    const [priceRange, setPriceRange] = useState<[number, number]>([Math.min(...prices), Math.max(...prices)]);
+    const [priceRange, setPriceRange] = useState<[number, number]>([0, maxPrice]);
 
     const filteredProducts = useMemo(() => {
         return products.filter((product) => {
             const price = Number(product.price);
             const matchesCategory = selectedCategory ? product.category_id === selectedCategory : true;
-            const matchesPrice = price >= priceRange[0] && price <= priceRange[1];
+            const matchesPrice = price >= priceRange[0] && price - 1 <= priceRange[1];
             return matchesCategory && matchesPrice;
         });
     }, [products, selectedCategory, priceRange]);
@@ -56,10 +57,10 @@ export default function Product() {
                     <div className="col">
                         <Form.Label>Up to AED {priceRange[1]}</Form.Label>
                         <Form.Range
-                            step="10"
+                            step="1"
                             value={priceRange[1]}
-                            min={Math.min(...prices)}
-                            max={Math.max(...prices)}
+                            min={0}
+                            max={maxPrice}
                             onChange={(e) => setPriceRange([0, Number(e.target.value)])}
                         />
                     </div>
@@ -68,7 +69,11 @@ export default function Product() {
                     <div className="row g-4">
                         {filteredProducts.map((item) => (
                             <div key={item.id} className="col-xl-3 col-lg-4 col-sm-6">
-                                <ProductCard href="#" imagePath={item.image} product={{ name: item.name, price: item.price_formatted }} />
+                                <ProductCard
+                                    href={route('products.details', { id: item.id })}
+                                    imagePath={item.image}
+                                    product={{ id: item.id, name: item.name, price: item.price_formatted }}
+                                />
                             </div>
                         ))}
                     </div>
@@ -77,7 +82,7 @@ export default function Product() {
                         <TriangleAlertIcon className="h-20 w-20 text-red-600" />
                         <div className="text-center">
                             <div className="mb-1.5 text-2xl font-black">Product Not Found</div>
-                            <div className="opacity-55">Try Searching with other categories</div>
+                            <div className="opacity-55">Try Searching with other categories or different price ranges</div>
                         </div>
                     </div>
                 )}

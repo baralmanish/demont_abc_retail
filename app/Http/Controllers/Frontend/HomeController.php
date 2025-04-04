@@ -55,4 +55,12 @@ class HomeController extends Controller
             'products' => $products,
         ]);
     }
+
+    public function productDetails($id)
+    {
+        $product = Product::with('category:id,name')->findOrFail($id);
+        return Inertia::render('frontend/product-details', [
+            'product' => $product,
+        ]);
+    }
 }

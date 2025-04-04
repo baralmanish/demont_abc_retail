@@ -32,7 +32,11 @@ export default function Home() {
                     <div className="row g-4 justify-content-md-center">
                         {products.map((item) => (
                             <div key={item.id} className="col-xl-3 col-lg-4 col-sm-6">
-                                <ProductCard href="#" imagePath={item.image} product={{ name: item.name, price: item.price_formatted }} />
+                                <ProductCard
+                                    href={route('products.details', { id: item.id })}
+                                    imagePath={item.image}
+                                    product={{ id: item.id, name: item.name, price: item.price_formatted }}
+                                />
                             </div>
                         ))}
                     </div>

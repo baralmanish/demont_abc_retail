@@ -17,9 +17,6 @@ export default function AppHeader() {
     const { auth, url } = usePage<SharedData>().props;
     const [y, setY] = useState(window.scrollY);
 
-    console.log('>> url', url);
-    console.log('>> rrr', route('about'));
-
     useEffect(() => {
         const handleScroll = () => setY(window.scrollY);
 
@@ -50,7 +47,7 @@ export default function AppHeader() {
                             <Link href={route('about')} className={cn('nav-link', url === route('about') && 'active')}>
                                 About
                             </Link>
-                            <Link href={route('products')} className={cn('nav-link', url === route('products') && 'active')}>
+                            <Link href={route('products')} className={cn('nav-link', url.includes('/products') && 'active')}>
                                 Products
                             </Link>
                             <Link href={route('contact')} className={cn('nav-link', url === route('contact') && 'active')}>

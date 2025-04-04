@@ -1,7 +1,5 @@
 import Carousel from 'react-bootstrap/Carousel';
 
-import { Button } from '@/components/fe_ui/button';
-
 import DeliveryIcon from '../../../images/delivery-icon.png';
 import Hero1 from '../../../images/hero1.png';
 import Hero2 from '../../../images/hero2.png';
@@ -25,7 +23,9 @@ export default function AppHero() {
                                 <span className="text-xl max-sm:text-[14px]">Free delivery around 5 KM</span>
                             </div>
 
-                            <Button className="w-fit lg:text-lg">SHOP NOW</Button>
+                            <a className="btn btn-success w-fit lg:text-lg" href={route('products')}>
+                                SHOP NOW
+                            </a>
                         </div>
                     </div>
                 </div>
