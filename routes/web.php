@@ -8,6 +8,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/', 'home')->name('home');
     Route::get('/about-us', 'about')->name('about');
     Route::get('/contact-us', 'contact')->name('contact');
+    Route::post('/contact-us', 'sendContact')->name('contact.send');
     Route::get('/products', 'product')->name('products');
 });
 

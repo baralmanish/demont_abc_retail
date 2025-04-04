@@ -18,7 +18,6 @@ interface InertiaPage extends SharedData {
 export default function Product() {
     const { products, site } = usePage<InertiaPage>().props;
     const prices = products.map((product) => Number(product.price));
-    console.log('>>> prices', Math.min(...prices), prices);
 
     const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
     const [priceRange, setPriceRange] = useState<[number, number]>([Math.min(...prices), Math.max(...prices)]);

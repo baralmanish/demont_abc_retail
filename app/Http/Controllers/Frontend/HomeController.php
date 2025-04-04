@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 use App\Models\Product;
+use App\Mail\ContactMail;
 
 class HomeController extends Controller
 {
@@ -27,6 +30,22 @@ class HomeController extends Controller
     {
 
         return Inertia::render('frontend/contact');
+    }
+
+    public function sendContact(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:50',
+            'email' => 'required|email',
+            'subject' => 'required|string|max:100',
+            'message' => 'required|string|max:500',
+        ]);
+
+        // Send an email or store the message in the database
+        Mail::to('info@abc-retail.ae')->send(new ContactMail($request->all()));
+
+        return back()->with('success', 'Your message has been sent successfully.');
+
     }
 
     public function product()

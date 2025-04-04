@@ -1,15 +1,44 @@
+import { Transition } from '@headlessui/react';
+import { useForm } from '@inertiajs/react';
 import { Globe, Mail, MapPin, Phone } from 'lucide-react';
+import { FormEventHandler } from 'react';
 
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 
+import InputError from '@/components/input-error';
 import AppLayoutProps from '@/layouts/frontend-layout';
 import BrandsScroll from '@/layouts/frontend/brands-scroll';
 import PageTitle from '@/layouts/frontend/page-title';
 
+interface ContactForm {
+    name: string;
+    email: string;
+    subject: string;
+    message: string;
+}
+
 export default function Contact() {
+    const { data, setData, post, errors, processing, recentlySuccessful, reset } = useForm<Required<ContactForm>>({
+        name: '',
+        email: '',
+        subject: '',
+        message: '',
+    });
+
+    const submit: FormEventHandler = (e) => {
+        e.preventDefault();
+
+        post(route('contact.send'), {
+            preserveScroll: true,
+            onSuccess: () => {
+                reset(); // Reset the form after successful submission
+            },
+        });
+    };
+
     return (
         <AppLayoutProps>
             <PageTitle
@@ -53,26 +82,70 @@ export default function Contact() {
                         </div>
                     </Col>
                     <Col lg={{ order: 'last', span: 7 }} xs={{ order: 'first', span: 12 }}>
-                        <Form>
+                        <Form onSubmit={submit}>
                             <Form.Group className="mb-3" controlId="contactName">
-                                <Form.Label>Name</Form.Label>
-                                <Form.Control placeholder="Enter full name" />
+                                <Form.Label>
+                                    Name
+                                    <span className="pl-0.5 text-red-600 dark:text-red-400">*</span>
+                                </Form.Label>
+                                <Form.Control value={data.name} placeholder="Enter full name" onChange={(e) => setData('name', e.target.value)} />
+                                <InputError message={errors.name} />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="contactEmail">
-                                <Form.Label>Email address</Form.Label>
-                                <Form.Control type="email" placeholder="Enter email" />
+                                <Form.Label>
+                                    Email address
+                                    <span className="pl-0.5 text-red-600 dark:text-red-400">*</span>
+                                </Form.Label>
+                                <Form.Control
+                                    required
+                                    type="email"
+                                    placeholder="Enter email"
+                                    value={data.email}
+                                    onChange={(e) => setData('email', e.target.value)}
+                                />
+                                <InputError message={errors.email} />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="contactSubject">
-                                <Form.Label>Subject</Form.Label>
-                                <Form.Control placeholder="Enter subject" />
+                                <Form.Label>
+                                    Subject
+                                    <span className="pl-0.5 text-red-600 dark:text-red-400">*</span>
+                                </Form.Label>
+                                <Form.Control
+                                    required
+                                    placeholder="Enter subject"
+                                    value={data.subject}
+                                    onChange={(e) => setData('subject', e.target.value)}
+                                />
+                                <InputError message={errors.subject} />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="contactMessage">
-                                <Form.Label>Message</Form.Label>
-                                <Form.Control as="textarea" rows={3} />
+                                <Form.Label>
+                                    Message
+                                    <span className="pl-0.5 text-red-600 dark:text-red-400">*</span>
+                                </Form.Label>
+                                <Form.Control
+                                    required
+                                    as="textarea"
+                                    rows={3}
+                                    value={data.message}
+                                    onChange={(e) => setData('message', e.target.value)}
+                                />
+                                <InputError message={errors.message} />
                             </Form.Group>
-                            <Button variant="primary" type="submit">
-                                Submit
-                            </Button>
+                            <div className="flex items-center gap-4">
+                                <Button variant="success" type="submit" disabled={processing}>
+                                    {processing ? 'Submitting...' : 'Submit'}
+                                </Button>
+                                <Transition
+                                    show={recentlySuccessful}
+                                    enter="transition ease-in-out"
+                                    enterFrom="opacity-0"
+                                    leave="transition ease-in-out"
+                                    leaveTo="opacity-0"
+                                >
+                                    <div className="text-sm text-neutral-600">Message Sent</div>
+                                </Transition>
+                            </div>
                         </Form>
                     </Col>
                 </Row>
