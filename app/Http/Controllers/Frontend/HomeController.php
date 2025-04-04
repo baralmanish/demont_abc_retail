@@ -3,17 +3,17 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
 use Inertia\Inertia;
+use App\Models\Product;
 
 class HomeController extends Controller
 {
     public function home()
     {
-        $categories = Category::all();
+        $products = Product::latest()->take(8)->get();
 
         return Inertia::render('frontend/home', [
-            'categories' => $categories,
+            'products' => $products,
         ]);
     }
 }

@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\Category;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Product;
 use App\Models\SocialLink;
-use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
@@ -17,8 +17,8 @@ class DashboardController extends Controller
     {
         $totalCategories = Category::count();
         $totalProducts = Product::count();
-        $totalOrder = Order::count();
         $orders = Order::getOrders();
+        $totalOrder = $orders->count();
 
         return Inertia::render('dashboard/index', [
             'totalCategories' => $totalCategories,

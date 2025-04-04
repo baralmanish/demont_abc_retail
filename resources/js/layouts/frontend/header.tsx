@@ -1,5 +1,6 @@
 import { Link, usePage } from '@inertiajs/react';
 import { Search, ShoppingBag, User } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
@@ -7,15 +8,26 @@ import Navbar from 'react-bootstrap/Navbar';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 
 import { Logo } from '@/components/fe_ui/logo';
+import { cn } from '@/lib/utils';
 import { SharedData } from '@/types';
 
 const expand = 'lg';
 
 export default function AppHeader() {
     const { auth } = usePage<SharedData>().props;
+    const [y, setY] = useState(window.scrollY);
+
+    useEffect(() => {
+        const handleScroll = () => setY(window.scrollY);
+
+        window.addEventListener('scroll', handleScroll);
+
+        // Cleanup on unmount
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     return (
-        <Navbar collapseOnSelect key={expand} expand={expand} sticky="top" className="bg-white">
+        <Navbar collapseOnSelect key={expand} expand={expand} sticky="top" className={cn('bg-white', y > 100 && 'shadow')}>
             <Container className="my-2.5">
                 <Logo />
                 <Navbar.Offcanvas

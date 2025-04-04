@@ -20,8 +20,8 @@ export default function AppHero() {
                             <span className="block text-8xl font-bold uppercase max-lg:text-6xl max-sm:text-3xl">grocery</span>
                         </h2>
                         <div className="flex flex-col gap-4 max-sm:gap-2">
-                            <div className="flex items-center gap-3 max-sm:gap-0.5">
-                                <img src={DeliveryIcon} className="aspect-square w-16 max-lg:w-12 max-sm:w-8" />
+                            <div className="flex items-center gap-2.5 max-sm:gap-0.5">
+                                <img src={DeliveryIcon} className="aspect-square w-12 max-lg:w-12 max-sm:w-8" />
                                 <span className="text-xl max-sm:text-[14px]">Free delivery around 5 KM</span>
                             </div>
 

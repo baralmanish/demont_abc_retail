@@ -4,6 +4,8 @@ import { type ReactNode } from 'react';
 import SSRProvider from 'react-bootstrap/SSRProvider';
 
 import AppHeader from '@/layouts/frontend/header';
+import AppFooter from './frontend/footer';
+
 import { SharedData } from '@/types';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -14,7 +16,7 @@ interface AppLayoutProps {
 }
 
 export default ({ children, ...props }: AppLayoutProps) => {
-    const { meta } = usePage<SharedData>().props;
+    const { meta, site } = usePage<SharedData>().props;
 
     return (
         <SSRProvider>
@@ -23,13 +25,12 @@ export default ({ children, ...props }: AppLayoutProps) => {
                 <meta name="keywords" content={meta.keywords} />
                 <meta property="og:title" content={meta.title} />
                 <meta property="og:description" content={meta.description} />
-
-                <link href="" rel="stylesheet" type="text/css" media="all"></link>
             </Head>
 
             <div {...props}>
                 <AppHeader />
                 {children}
+                <AppFooter socialLink={site.socialLink} />
             </div>
         </SSRProvider>
     );

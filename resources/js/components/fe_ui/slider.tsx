@@ -5,7 +5,6 @@ import 'slick-carousel/slick/slick.css';
 
 const defaultSettings = {
     dots: false,
-    infinite: true,
     autoplay: true,
     speed: 300,
     slidesToShow: 6,
