@@ -1,6 +1,10 @@
 import { LucideIcon } from 'lucide-react';
 import type { Config } from 'ziggy-js';
 
+import { Category } from '@/types/category';
+import { ISocialLinks } from '@/types/socialLinks';
+import { Testimonial } from '@/types/testimonial';
+
 export interface Auth {
     user: User;
 }
@@ -34,6 +38,12 @@ export interface SharedData {
     quote: { message: string; author: string };
     auth: Auth;
     ziggy: Config & { location: string };
+    url: string;
+    site: {
+        socialLink: ISocialLinks;
+        categories: Category[];
+        testimonials: Testimonial[];
+    };
     [key: string]: unknown;
 }
 

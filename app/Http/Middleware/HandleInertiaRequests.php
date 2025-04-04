@@ -6,6 +6,9 @@ use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
+use App\Models\SocialLink;
+use App\Models\Category;
+use App\Models\Testimonial;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -37,6 +40,9 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $categories = Category::orderBy('name', 'asc')->get();
+        $socialLink = SocialLink::first();
+        $testimonials = Testimonial::where('status', 'active')->get();
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
 
         return [
@@ -47,14 +53,20 @@ class HandleInertiaRequests extends Middleware
                 'description' => 'Best online supermarket in UAE. Get groceries, electronics, and more.',
                 'keywords' => 'online shopping, ABC Retail, supermarket, UAE',
             ],
+            'site' => [
+                'categories' => $categories,
+                'socialLink' => $socialLink,
+                'testimonials' => $testimonials,
+            ],
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
                 'user' => $request->user(),
             ],
-            'ziggy' => fn (): array => [
+            'url' => $request->url(),
+            'ziggy' => app()->environment('local') ? fn (): array => [
                 ...(new Ziggy())->toArray(),
                 'location' => $request->url(),
-            ]
+            ] : null
         ];
     }
 }
