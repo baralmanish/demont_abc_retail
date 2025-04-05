@@ -44,3 +44,7 @@ export function getPaymentStatusVariants(status: PAYMENT_STATUS) {
 
     return variant;
 }
+
+export function formatCurrency(amount: number) {
+    return new Intl.NumberFormat('en-AE', { style: 'currency', currency: 'AED' }).format(amount);
+}

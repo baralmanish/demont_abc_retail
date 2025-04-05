@@ -140,7 +140,7 @@ export default function ProductsForm() {
                             placeholder="Price"
                         />
 
-                        <InputError message={errors.name} />
+                        <InputError message={errors.price} />
                     </div>
                     <div className="grid gap-2">
                         <Label htmlFor="category_id">
@@ -186,7 +186,7 @@ export default function ProductsForm() {
                         <FileInput
                             required={!product?.image}
                             id="image"
-                            className="mt-1 block w-full"
+                            className="mt-1 block aspect-square w-full object-cover"
                             accept="image/png, image/jpeg"
                             onChange={handleImageChange}
                         />

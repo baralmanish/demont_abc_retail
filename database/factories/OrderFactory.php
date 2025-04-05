@@ -14,9 +14,10 @@ class OrderFactory extends Factory
     public function definition(): array
     {
         return [
-        'user_id' => 1,
-        'total_price' => 0, // Will be updated after adding items
-        'status' => fake()->randomElement(['pending', 'processing', 'completed', 'cancelled']),
+            'user_id' => 1,
+            'total_price' => 0, // Will be updated after adding items
+            'status' => fake()->randomElement(['pending', 'processing', 'completed', 'cancelled']),
+            'shipping_address' => 'Fake Address',
         ];
     }
 

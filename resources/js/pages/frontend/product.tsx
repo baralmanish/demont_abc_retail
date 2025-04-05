@@ -1,5 +1,5 @@
-import { usePage } from '@inertiajs/react';
-import { useMemo, useState } from 'react';
+import { router, usePage } from '@inertiajs/react';
+import { useEffect, useMemo, useState } from 'react';
 
 import Form from 'react-bootstrap/Form';
 
@@ -18,10 +18,18 @@ interface InertiaPage extends SharedData {
 export default function Product() {
     const { products, site } = usePage<InertiaPage>().props;
     const prices = products.map((product) => Number(product.price));
-    const maxPrice = Math.max(...prices) + 5;
+    const maxPrice = Math.ceil(Math.max(...prices) + 5);
 
     const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
     const [priceRange, setPriceRange] = useState<[number, number]>([0, maxPrice]);
+
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const catId = params.get('catId');
+        if (catId) {
+            setSelectedCategory(Number(catId));
+        }
+    }, []);
 
     const filteredProducts = useMemo(() => {
         return products.filter((product) => {
@@ -41,9 +49,29 @@ export default function Product() {
                     <div className="col">
                         <Form.Label>Select Category</Form.Label>
                         <Form.Select
-                            aria-label="Default select example"
+                            aria-label="Select category"
                             className="border p-2"
-                            onChange={(e) => setSelectedCategory(Number(e.target.value))}
+                            onChange={(e) => {
+                                const newCatId = e.target.value ? Number(e.target.value) : null;
+                                setSelectedCategory(newCatId);
+
+                                const params = new URLSearchParams(window.location.search);
+                                if (newCatId) {
+                                    params.set('catId', newCatId.toString());
+                                } else {
+                                    params.delete('catId');
+                                }
+
+                                router.get(
+                                    `${route('products')}?${params.toString()}`,
+                                    {},
+                                    {
+                                        preserveState: true,
+                                        preserveScroll: true,
+                                        replace: true,
+                                    },
+                                );
+                            }}
                             value={selectedCategory || ''}
                         >
                             <option value="">All Categories</option>

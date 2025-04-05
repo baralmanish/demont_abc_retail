@@ -1,5 +1,5 @@
-import { usePage } from '@inertiajs/react';
-import { Minus, Plus, ShoppingBasket } from 'lucide-react';
+import { router, usePage } from '@inertiajs/react';
+import { LoaderCircle, Minus, Plus, ShoppingBasket } from 'lucide-react';
 import { useState } from 'react';
 
 import Button from 'react-bootstrap/esm/Button';
@@ -20,20 +20,42 @@ export default function ProductDetails() {
     const { product } = usePage<InertiaPage>().props;
 
     const [count, setCount] = useState(1);
+    const [loading, setLoading] = useState(false);
+
+    const handleAddToCart = () => {
+        setLoading(true);
+        router.post(
+            route('cart.add'),
+            { product_id: product.id, quantity: count },
+            {
+                preserveScroll: true,
+                onError: () => {
+                    console.error('ERROR:: Error in adding cart.');
+                },
+                onFinish: () => {
+                    setCount(1);
+                    setLoading(false);
+                },
+            },
+        );
+    };
 
     return (
         <AppLayoutProps>
             <PageTitle title="Product Details" />
             <div className="container my-16">
-                <Row className="g-4">
+                <Row className="gutter-5">
                     <Col lg={6}>
-                        <img src={product.image} className="aspect-square w-full" />
+                        <img src={product.image} className="aspect-square w-full object-contain" />
                     </Col>
                     <Col lg={6}>
-                        <div className="mb-4 flex flex-col">
+                        <div className="mb-3 flex flex-col">
                             <small className="uppercase">{product.category.name}</small>
-                            <h1>{product.name}</h1>
+                            <h1>
+                                <span className="text-3xl font-bold">{product.name}</span>
+                            </h1>
                         </div>
+                        <div className="mb-5 text-5xl font-black">{product.price_formatted}</div>
                         <div className="mb-4 flex flex-row gap-4">
                             <div className="flex">
                                 <Button variant="secondary" disabled={count === 1} onClick={() => (count > 1 ? setCount((c) => c - 1) : undefined)}>
@@ -44,10 +66,11 @@ export default function ProductDetails() {
                                     <Plus />
                                 </Button>
                             </div>
-                            <Button variant="success" className="w-full">
+                            <Button variant="success" className="w-full" onClick={handleAddToCart} disabled={loading}>
                                 <div className="flex justify-center gap-2 py-2 font-bold">
-                                    <ShoppingBasket />
-                                    Add to Cart
+                                    {loading ? <LoaderCircle className="spin" /> : <ShoppingBasket />}
+
+                                    {loading ? 'Adding to Cart...' : 'Add to Cart'}
                                 </div>
                             </Button>
                         </div>

@@ -31,15 +31,13 @@ interface InertiaPage extends SharedData {
 }
 
 export default function Orders() {
-    const { order } = usePage<InertiaPage>().props;
+    const { order, auth } = usePage<InertiaPage>().props;
     const { data, setData, post, processing, reset, errors, clearErrors } = useForm<
         Required<{ status: ORDER_STATUS; payment_status: PAYMENT_STATUS }>
     >({
         status: order.status,
         payment_status: (order.payment?.payment_status || 'pending') as PAYMENT_STATUS,
     });
-
-    console.log(data);
 
     const updateOrderStatus: FormEventHandler = (e) => {
         e.preventDefault();
@@ -97,7 +95,7 @@ export default function Orders() {
                                     <img src={row.product.image} alt={row.product.name} className="aspect-square w-12 object-fill" />
                                 </td>
                                 <td className="px-6 py-3">
-                                    <a href={route('dashboard.products.edit', { id: row.product.id })} target="_blank" className="hover:underline">
+                                    <a href={route('products.details', { id: row.product.id })} target="_blank" className="hover:underline">
                                         <strong>{row.product.name}</strong>
                                     </a>
                                     <div className="line-clamp-1">{row.product.description}</div>
@@ -285,7 +283,11 @@ export default function Orders() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Order Detail" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-                <PageHeader title="Order Detail" onBack={() => router.get(route('dashboard'))} actions={renderActions()} />
+                <PageHeader
+                    title="Order Detail"
+                    onBack={() => router.get(route('dashboard'))}
+                    actions={auth.user.role === 'ADMIN' ? renderActions() : null}
+                />
                 <div className="flex w-full flex-row gap-4">
                     {renderOrderItems()}
                     {renderOrderDetails()}

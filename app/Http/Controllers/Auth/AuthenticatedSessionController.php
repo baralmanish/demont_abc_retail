@@ -7,9 +7,11 @@ use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\Cart;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -33,7 +35,15 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        // Migrate session cart to DB on login
+        $this->migrateSessionCartToDatabase($request);
+
+        if (Auth::user()->role === 'ADMIN') {
+            return redirect()->intended(route('dashboard', absolute: false));
+        } else {
+            return redirect()->intended(route('home', absolute: false));
+
+        }
     }
 
     /**
@@ -47,5 +57,27 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+
+    private function migrateSessionCartToDatabase(Request $request): void
+    {
+        $sessionCart = $request->session()->get('cart', []);
+        $userId = $request->user()->id;
+
+        if (!empty($sessionCart)) {
+            foreach ($sessionCart as $productId => $item) {
+                if (!isset($item['quantity']) || !is_numeric($item['quantity'])) {
+                    continue;
+                }
+    
+                Cart::updateOrCreate(
+                    ['user_id' => $userId, 'product_id' => intval($productId)],
+                    ['quantity' => DB::raw('quantity + ' . intval($item['quantity']))]
+                );
+            }
+    
+            // Clear the session cart
+            $request->session()->forget('cart');
+        }
     }
 }

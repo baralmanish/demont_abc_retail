@@ -37,8 +37,9 @@ export interface SharedData {
     meta: SharedDataMeta;
     quote: { message: string; author: string };
     auth: Auth;
-    ziggy: Config & { location: string };
     url: string;
+    cartItems: ICartItems[];
+    ziggy: Config & { location: string };
     site: {
         socialLink: ISocialLinks;
         categories: Category[];
@@ -55,6 +56,7 @@ export interface User {
     email_verified_at: string | null;
     created_at: string;
     updated_at: string;
+    role: string;
     [key: string]: unknown; // This allows for additional properties...
 }
 

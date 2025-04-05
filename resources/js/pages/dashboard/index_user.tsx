@@ -1,7 +1,6 @@
 import { Head, Link, usePage } from '@inertiajs/react';
-import { BadgeAlert, Eye, Layers2, PackageSearch, ShoppingBasket } from 'lucide-react';
+import { BadgeAlert, Eye } from 'lucide-react';
 
-import { CardStats } from '@/components/card-stats';
 import { Badge } from '@/components/ui/badge';
 import AppLayout from '@/layouts/app-layout';
 
@@ -25,25 +24,12 @@ interface InertiaPage extends SharedData {
 }
 
 export default function Dashboard() {
-    const { totalCategories, totalProducts, totalOrder, orders } = usePage<InertiaPage>().props;
-
-    console.log('orders', orders);
-
-    const renderStats = () => {
-        return (
-            <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-                <CardStats item={{ title: 'Categories', count: totalCategories, icon: Layers2 }} />
-                <CardStats item={{ title: 'Products', count: totalProducts, icon: PackageSearch }} />
-                <CardStats item={{ title: 'Orders', count: totalOrder, icon: ShoppingBasket }} />
-            </div>
-        );
-    };
+    const { orders } = usePage<InertiaPage>().props;
 
     const renderTableRow = (row: Order) => {
         return (
             <tr key={row.id} className="border-b border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
                 <td className="px-6 py-3">{row.order_date}</td>
-                <td className="px-6 py-3">{row.ordered_by}</td>
                 <td className="px-6 py-3 text-right">{row.quantity}</td>
                 <td className="px-6 py-3 text-right">{row.total_price}</td>
                 <td className="px-6 py-3">
@@ -91,9 +77,6 @@ export default function Dashboard() {
                             <th scope="col" className="w-48 px-6 py-3">
                                 Ordered Date
                             </th>
-                            <th scope="col" className="px-6 py-3">
-                                Ordered By
-                            </th>
                             <th scope="col" className="w-20 px-6 py-3 text-right">
                                 Qty
                             </th>
@@ -106,7 +89,7 @@ export default function Dashboard() {
                             <th scope="col" className="w-30 px-6 py-3">
                                 Payment
                             </th>
-                            <th scope="col" className="w-24 px-6 py-3 text-center">
+                            <th scope="col" className="w-12 px-6 py-3 text-center">
                                 View
                             </th>
                         </tr>
@@ -121,7 +104,6 @@ export default function Dashboard() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-                {renderStats()}
                 <div className="border-sidebar-border/70 dark:border-sidebar-border relative min-h-[100vh] flex-1 overflow-hidden rounded-xl border p-4 md:min-h-min">
                     {renderTable()}
                 </div>

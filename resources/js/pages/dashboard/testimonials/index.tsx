@@ -37,7 +37,7 @@ export default function Testimonials() {
         return (
             <tr key={row.id} className="border-b border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
                 <td className="px-6 py-3">
-                    <img src={row.image} alt={row.name} className="aspect-square w-12 object-fill" />
+                    <img src={row.image} alt={row.name} className="aspect-square w-12 object-cover" />
                 </td>
                 <td className="px-6 py-3">
                     <strong>{row.name}</strong>
