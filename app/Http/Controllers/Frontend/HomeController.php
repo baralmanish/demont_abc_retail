@@ -59,13 +59,28 @@ class HomeController extends Controller
         ]);
     }
 
-    public function productDetails(Request $request, $id)
+    public function productDetails($id)
     {
-        // $request->session()->forget('cart');
         $product = Product::with('category:id,name')->findOrFail($id);
         return Inertia::render('frontend/product-details', [
             'product' => $product,
         ]);
+    }
+
+    public function cart()
+    {
+        return Inertia::render('frontend/cart');
+    }
+
+    public function checkout()
+    {
+        $cartItems = Cart::getCartItems();
+
+        if ($cartItems->isEmpty()) {
+            return redirect()->route('home');
+        }
+
+        return Inertia::render('frontend/checkout');
     }
 
     public function addToCart(Request $request)
@@ -104,5 +119,42 @@ class HomeController extends Controller
         }
 
         return back()->with('success', 'Product added to cart.');
+    }
+
+    public function updateCartItem(Request $request)
+    {
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'quantity' => 'required|integer|min:1|max:10',
+        ]);
+
+        if (Auth::check()) {
+            Cart::where('user_id', Auth::id())
+                ->where('product_id', $request->product_id)
+                ->update(['quantity' => $request->quantity]);
+        } else {
+            $cart = session()->get('cart', []);
+            if (isset($cart[$request->product_id])) {
+                $cart[$request->product_id]['quantity'] = $request->quantity;
+                session()->put('cart', $cart);
+            }
+        }
+
+        return back()->with('success', 'Cart updated successfully.');
+    }
+
+    public function removeCartItem($id)
+    {
+        if (Auth::check()) {
+            Cart::where('user_id', Auth::id())
+                ->where('product_id', $id)
+                ->delete();
+        } else {
+            $cart = session()->get('cart', []);
+            unset($cart[$id]);
+            session()->put('cart', $cart);
+        }
+
+        return back()->with('success', 'Item removed from cart.');
     }
 }

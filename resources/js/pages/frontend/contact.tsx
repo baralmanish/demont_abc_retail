@@ -57,25 +57,25 @@ export default function Contact() {
                             </div>
                             <div>
                                 <div className="flex flex-row items-center gap-1.5">
-                                    <MapPin className="h-5 w-5" /> <span className="font-bold">Address</span>
+                                    <MapPin className="h-5 w-5" /> <span className="font-bold opacity-75">Address</span>
                                 </div>
                                 <div className="pl-6">Dubai, United Arab Emirates</div>
                             </div>
                             <div>
                                 <div className="flex flex-row items-center gap-1.5">
-                                    <Phone className="h-5 w-5" /> <span className="font-bold">Phone</span>
+                                    <Phone className="h-5 w-5" /> <span className="font-bold opacity-75">Phone</span>
                                 </div>
                                 <div className="pl-6">+971 547386975</div>
                             </div>
                             <div>
                                 <div className="flex flex-row items-center gap-1.5">
-                                    <Mail className="h-5 w-5" /> <span className="font-bold">Email</span>
+                                    <Mail className="h-5 w-5" /> <span className="font-bold opacity-75">Email</span>
                                 </div>
                                 <div className="pl-6">info@abc-retail.ae</div>
                             </div>
                             <div>
                                 <div className="flex flex-row items-center gap-1.5">
-                                    <Globe className="h-5 w-5" /> <span className="font-bold">Website</span>
+                                    <Globe className="h-5 w-5" /> <span className="font-bold opacity-75">Website</span>
                                 </div>
                                 <div className="pl-6">www.abc-retail.ae</div>
                             </div>

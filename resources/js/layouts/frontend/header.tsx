@@ -59,7 +59,6 @@ export default function AppHeader() {
 
     const renderNavbarIcons = () => {
         const cartCount = cartItems?.length || 0;
-        console.log({ cartItems });
 
         return (
             <div className="flex items-center space-x-4">
@@ -68,9 +67,9 @@ export default function AppHeader() {
                 <Search className="hidden h-6 w-6 cursor-pointer text-gray-600 hover:text-green-600" />
 
                 {/* User Account */}
-                <a target="_blank" href={auth.user ? route('dashboard') : route('login')} title={auth.user ? 'My Account' : 'Login'}>
+                <Link href={auth.user ? route('dashboard') : route('login')} title={auth.user ? 'My Account' : 'Login'}>
                     <User className="h-6 w-6 cursor-pointer text-gray-600 hover:text-green-600" />
-                </a>
+                </Link>
 
                 {/* Cart Icon with Badge */}
                 <Link href="/cart" className="relative">
