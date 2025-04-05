@@ -1,6 +1,10 @@
 import { LucideIcon } from 'lucide-react';
 import type { Config } from 'ziggy-js';
 
+import { Category } from '@/types/category';
+import { ISocialLinks } from '@/types/socialLinks';
+import { Testimonial } from '@/types/testimonial';
+
 export interface Auth {
     user: User;
 }
@@ -22,11 +26,25 @@ export interface NavItem {
     isActive?: boolean;
 }
 
+export interface SharedDataMeta {
+    title: string;
+    description: string;
+    keywords: string;
+}
+
 export interface SharedData {
     name: string;
+    meta: SharedDataMeta;
     quote: { message: string; author: string };
     auth: Auth;
+    url: string;
+    cartItems: ICartItems[];
     ziggy: Config & { location: string };
+    site: {
+        socialLink: ISocialLinks;
+        categories: Category[];
+        testimonials: Testimonial[];
+    };
     [key: string]: unknown;
 }
 
@@ -38,5 +56,8 @@ export interface User {
     email_verified_at: string | null;
     created_at: string;
     updated_at: string;
+    role: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+export type BadgeVariant = 'default' | 'secondary' | 'success' | 'error' | 'info';
