@@ -1,4 +1,8 @@
-import { ShoppingBasket } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { router } from '@inertiajs/react';
+import { LoaderCircle, ShoppingBasket } from 'lucide-react';
+import { useState } from 'react';
+import Button from 'react-bootstrap/esm/Button';
 
 interface ProductCardProps {
     href: string;
@@ -11,8 +15,29 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ href, imagePath, product }: ProductCardProps) {
+    const [loading, setLoading] = useState(false);
+
+    const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+
+        setLoading(true);
+        router.post(
+            route('cart.add'),
+            { product_id: product.id, quantity: 1 },
+            {
+                preserveScroll: true,
+                onError: () => {
+                    console.error('ERROR:: Error in adding cart.');
+                },
+                onFinish: () => {
+                    setLoading(false);
+                },
+            },
+        );
+    };
+
     return (
-        <a className="product-card" href={href}>
+        <a className={cn('product-card', loading && 'disabled')} href={href}>
             <div className="product-img">
                 <img src={imagePath} />
             </div>
@@ -24,10 +49,11 @@ export function ProductCard({ href, imagePath, product }: ProductCardProps) {
                     </div>
                 </div>
                 <div className="product-cart-btn">
-                    <div className="product-btn">
-                        <ShoppingBasket />
-                        Add to Cart
-                    </div>
+                    <Button className="product-btn" onClick={handleAddToCart} disabled={loading}>
+                        {loading ? <LoaderCircle className="spin" /> : <ShoppingBasket />}
+
+                        {loading ? 'Adding to Cart...' : 'Add to Cart'}
+                    </Button>
                 </div>
             </div>
         </a>

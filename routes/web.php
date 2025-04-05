@@ -11,6 +11,8 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('/contact-us', 'sendContact')->name('contact.send');
     Route::get('/products', 'product')->name('products');
     Route::get('/products/{id}', 'productDetails')->name('products.details');
+    
+    Route::post('/cart/add', 'addToCart')->name('cart.add');
 });
 
 Route::get('/welcome', function () {

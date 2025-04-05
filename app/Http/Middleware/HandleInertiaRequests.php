@@ -8,6 +8,7 @@ use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
 use App\Models\SocialLink;
 use App\Models\Category;
+use App\Models\Cart;
 use App\Models\Testimonial;
 
 class HandleInertiaRequests extends Middleware
@@ -62,6 +63,7 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            'cartItems' => fn () => Cart::getCartItems(),
             'url' => $request->url(),
             'ziggy' => app()->environment('local') ? fn (): array => [
                 ...(new Ziggy())->toArray(),

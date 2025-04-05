@@ -17,6 +17,19 @@ body {
     }
 }
 
+@keyframes spin {
+    from {
+        transform: scale(1) rotate(0deg);
+    }
+    to {
+        transform: scale(1) rotate(360deg);
+    }
+}
+
+.spin {
+    animation: spin 1s infinite linear;
+}
+
 .navbar-toggler {
     border: none;
     outline: 0;
@@ -157,10 +170,15 @@ body {
             border-radius: 4px;
             transition: all 0.4s;
             font-weight: bold;
+            border: none;
 
             &:hover {
                 background-color: var(--brand-color);
                 color: #ffffff;
+            }
+
+            &:disabled {
+                cursor: default;
             }
         }
     }
@@ -173,6 +191,12 @@ body {
                 transform: scale(1.1);
             }
         }
+    }
+
+    &.disabled {
+        pointer-events: none;
+        cursor: default;
+        opacity: 0.6;
     }
 }
 

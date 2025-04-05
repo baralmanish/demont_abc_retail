@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 use App\Models\Product;
 use App\Mail\ContactMail;
+use App\Models\Cart;
 
 class HomeController extends Controller
 {
@@ -56,11 +59,50 @@ class HomeController extends Controller
         ]);
     }
 
-    public function productDetails($id)
+    public function productDetails(Request $request, $id)
     {
+        // $request->session()->forget('cart');
         $product = Product::with('category:id,name')->findOrFail($id);
         return Inertia::render('frontend/product-details', [
             'product' => $product,
         ]);
+    }
+
+    public function addToCart(Request $request)
+    {
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'quantity' => 'required|integer|min:1|max:10',
+        ]);
+
+        $product = Product::findOrFail($request->product_id);
+
+        if (Auth::check()) {
+            // Authenticated user
+            Cart::updateOrCreate(
+                ['user_id' => Auth::id(), 'product_id' => $product->id],
+                ['quantity' => DB::raw("quantity + {$request->quantity}")]
+            );
+
+        } else {
+            // Guest user - store in session
+            $cartItem = session()->get('cart', []);
+
+            if (isset($cartItem[$product->id])) {
+                $cartItem[$product->id]['quantity'] += $request->quantity;
+            } else {
+                $cartItem[$product->id] = [
+                    'id' => $product->id,
+                    'name' => $product->name,
+                    'price' => $product->price,
+                    'image' => $product->image,
+                    'quantity' => $request->quantity,
+                ];
+            }
+
+            session()->put('cart', $cartItem);
+        }
+
+        return back()->with('success', 'Product added to cart.');
     }
 }

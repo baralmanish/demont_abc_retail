@@ -37,8 +37,9 @@ export interface SharedData {
     meta: SharedDataMeta;
     quote: { message: string; author: string };
     auth: Auth;
-    ziggy: Config & { location: string };
     url: string;
+    cartItems: ICartItems[];
+    ziggy: Config & { location: string };
     site: {
         socialLink: ISocialLinks;
         categories: Category[];
