@@ -57,7 +57,7 @@ export default function CartPage() {
                         <tr>
                             <th className="w-13">Image</th>
                             <th>Name</th>
-                            <th className="w-28" style={{ textAlign: 'right' }}>
+                            <th className="w-16" style={{ textAlign: 'right' }}>
                                 Qty
                             </th>
                             <th className="w-32" style={{ textAlign: 'right' }}>
