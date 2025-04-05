@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use App\Models\Category;
 use App\Models\Order;
@@ -15,17 +16,26 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $totalCategories = Category::count();
-        $totalProducts = Product::count();
         $orders = Order::getOrders();
-        $totalOrder = $orders->count();
+        
+        if (Auth::user()->role === 'ADMIN') {
+            $totalCategories = Category::count();
+            $totalProducts = Product::count();
+            $totalOrder = $orders->count();
 
-        return Inertia::render('dashboard/index', [
-            'totalCategories' => $totalCategories,
-            'totalProducts' => $totalProducts,
-            'totalOrder' => $totalOrder,
-            'orders' => $orders,
-        ]);
+            return Inertia::render('dashboard/index', [
+                'totalCategories' => $totalCategories,
+                'totalProducts' => $totalProducts,
+                'totalOrder' => $totalOrder,
+                'orders' => $orders,
+            ]);
+        } else {
+
+            return Inertia::render('dashboard/index_user', [
+                'orders' => $orders,
+            ]);
+        }
+
     }
 
     public function products()

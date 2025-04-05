@@ -9,6 +9,7 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, Di
 
 import { Button } from '@/components/fe_ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { formatCurrency } from '@/lib/utils';
 import { SharedData } from '@/types';
 import { ArrowRight, ShoppingCart, Trash2 } from 'lucide-react';
 
@@ -50,10 +51,10 @@ export default function CartPage() {
                                     <th className="w-13">Image</th>
                                     <th>Name</th>
                                     <th className="w-32" style={{ textAlign: 'right' }}>
-                                        Price
+                                        Qty
                                     </th>
                                     <th className="w-32" style={{ textAlign: 'right' }}>
-                                        Qty
+                                        Price
                                     </th>
                                     <th className="w-24" style={{ textAlign: 'center' }}>
                                         Delete
@@ -67,7 +68,6 @@ export default function CartPage() {
                                             <img src={row.image} alt={row.name} className="aspect-square w-12 object-fill" />
                                         </td>
                                         <td className="align-middle">{row.name}</td>
-                                        <td className="text-right align-middle">{row.price}</td>
                                         <td className="text-right align-middle">
                                             <Select
                                                 defaultValue={`${row.quantity}`}
@@ -85,6 +85,7 @@ export default function CartPage() {
                                                 </SelectContent>
                                             </Select>
                                         </td>
+                                        <td className="text-right align-middle">{formatCurrency(row.price)}</td>
                                         <td className="text-right align-middle">
                                             <div className="flex flex-row items-center justify-center gap-3">
                                                 <Dialog>

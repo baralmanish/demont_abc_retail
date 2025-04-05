@@ -1,6 +1,6 @@
 import { Transition } from '@headlessui/react';
 import { useForm } from '@inertiajs/react';
-import { Globe, Mail, MapPin, Phone } from 'lucide-react';
+import { Globe, LoaderCircle, Mail, MapPin, Phone } from 'lucide-react';
 import { FormEventHandler } from 'react';
 
 import Button from 'react-bootstrap/Button';
@@ -134,7 +134,10 @@ export default function Contact() {
                             </Form.Group>
                             <div className="flex items-center gap-4">
                                 <Button variant="success" type="submit" disabled={processing}>
-                                    {processing ? 'Submitting...' : 'Submit'}
+                                    <span className="flex flex-row gap-2">
+                                        {processing && <LoaderCircle className="spin" />}
+                                        {processing ? 'Submitting...' : 'Submit'}
+                                    </span>
                                 </Button>
                                 <Transition
                                     show={recentlySuccessful}

@@ -13,7 +13,8 @@ class Order extends Model
     protected $fillable = [
         'user_id',
         'total_price',
-        'status'
+        'status',
+        'shipping_address',
     ];
 
     protected $hidden = [
@@ -64,7 +65,10 @@ class Order extends Model
             ->get(['id', 'total_price', 'status', 'created_at'])
             ->map(function ($order) {
                 return [
+                    'id' => $order->id,
                     'order_date' => $order->created_at->format('Y-m-d H:i:s'),
+                    'user_id' => $order->user_id,
+                    'ordered_by' => $order->user->name ?? 'Unknown User',
                     'quantity' => $order->orderItems->sum('quantity'),
                     'total_price' => $order->total_price_formatted,
                     'status' => $order->status,

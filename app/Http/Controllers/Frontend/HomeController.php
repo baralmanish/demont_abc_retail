@@ -8,9 +8,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
-use App\Models\Product;
 use App\Mail\ContactMail;
+use App\Models\Product;
 use App\Models\Cart;
+use App\Models\Payment;
+use App\Models\Order;
+use App\Models\OrderItem;
 
 class HomeController extends Controller
 {
@@ -156,5 +159,58 @@ class HomeController extends Controller
         }
 
         return back()->with('success', 'Item removed from cart.');
+    }
+
+    public function placeOrder(Request $request)
+    {
+        $request->validate([
+            'shipping_address' => 'required|string|max:255',
+            'payment_method' => 'required|in:cash,card',
+            'total_price' => 'required|numeric|min:1',
+        ]);
+
+        DB::beginTransaction();
+        
+        try {
+            $cartItems = Cart::getCartItems();
+
+            $order = Order::create([
+                'user_id' => Auth::id(),
+                'total_price' => $request->total_price,
+                'shipping_address' => $request->shipping_address,
+                'status' => 'pending',
+            ]);
+    
+
+            foreach ($cartItems as $item) {
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $item['id'],
+                    'quantity' => $item['quantity'],
+                    'price' => $item['price'],
+                ]);
+            }
+
+            Payment::create([
+                'order_id' => $order->id,
+                'payment_method' => $request->payment_method,
+                'amount' => $request->total_price,
+                'payment_status' => 'paid',
+            ]);
+
+            Cart::clearCart();
+            DB::commit();
+            
+            return redirect()->route('order.success')->with('success', 'Your order has been placed successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            
+            return back()->with('error', 'Something went wrong while placing the order. Please try again.');
+        }
+    }
+
+    public function orderSuccess()
+    {
+        return Inertia::render('frontend/order-success');
     }
 }

@@ -60,11 +60,8 @@ Route::middleware('auth')->group(function () {
         ->name('logout');
 });
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'role:ADMIN'])->group(function () {
     Route::controller(DashboardController::class)->group(function () {
-        Route::get('/dashboard', 'index')->name('dashboard');
-
-        Route::get('/dashboard/order/{id}', 'order')->name('dashboard.order');
         Route::post('/dashboard/order/{id}/update-status', 'updateOrderStatus')->name('dashboard.order.updateStatus');
         Route::post('/dashboard/order/{id}/payment/{paymentId}/update-status', 'updatePaymentStatus')->name('dashboard.payment.updateStatus');
 
@@ -98,6 +95,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/dashboard/testimonials/add', 'create')->name('dashboard.testimonials.create');
         Route::post('/dashboard/testimonials/{id}/edit', 'update')->name('dashboard.testimonials.update');
         Route::delete('/dashboard/testimonials/{id}/delete', 'delete')->name('dashboard.testimonials.delete');
+    });
+});
+
+Route::middleware(['auth', 'verified', 'role:ADMIN,USER'])->group(function () {
+    Route::controller(DashboardController::class)->group(function () {
+        Route::get('/dashboard', 'index')->name('dashboard');
+        Route::get('/dashboard/order/{id}', 'order')->name('dashboard.order');
     });
 
 

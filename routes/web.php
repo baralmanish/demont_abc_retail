@@ -19,7 +19,11 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('/cart/update', 'updateCartItem')->name('cart.update');
     Route::delete('/cart/remove/{id}', 'removeCartItem')->name('cart.remove');
 
-    Route::get('/checkout', 'checkout')->name('checkout');
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/checkout', 'checkout')->name('checkout');
+        Route::post('/checkout/placeOrder', 'placeOrder')->name('checkout.placeOrder');
+        Route::get('/order/success', 'orderSuccess')->name('order.success');
+    });
 });
 
 Route::get('/welcome', function () {

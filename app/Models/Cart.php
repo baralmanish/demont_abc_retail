@@ -45,4 +45,13 @@ class Cart extends Model
             return collect(session()->get('cart', []))->values();
         }
     }
+
+    public static function clearCart()
+    {
+        if (Auth::check()) {
+            self::where('user_id', Auth::id())->delete();
+        } else {
+            session()->forget('cart');
+        }
+    }
 }
