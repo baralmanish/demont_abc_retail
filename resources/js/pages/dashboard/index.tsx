@@ -106,7 +106,7 @@ export default function Dashboard() {
                             <th scope="col" className="w-30 px-6 py-3">
                                 Payment
                             </th>
-                            <th scope="col" className="w-24 px-6 py-3">
+                            <th scope="col" className="w-24 px-6 py-3 text-center">
                                 View
                             </th>
                         </tr>

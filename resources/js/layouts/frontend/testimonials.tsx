@@ -24,7 +24,7 @@ export default function Testimonials() {
                                 <StarRating rating={item.rating} />
                                 <div className="mx-auto w-5/8 text-center text-2xl">{item.review}</div>
                                 <div className="mt-10 flex flex-col items-center gap-1">
-                                    <img src={item.image} className="aspect-square w-18 rounded-full" />
+                                    <img src={item.image} className="aspect-square w-18 rounded-full object-cover" />
                                     <span className="font-black">{item.name}</span>
                                 </div>
                             </div>

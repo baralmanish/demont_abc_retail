@@ -16,8 +16,8 @@ class ProductRequest extends FormRequest
         $id = $this->route('id');
 
         $validation = [
-            'name' => ['required', 'string', 'max:50'],
-            'description' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255'],
+            'description' => ['required', 'string'],
             'price' => ['nullable', 'numeric', 'min:1'],
             'category_id' => ['required', 'exists:categories,id'],
             'status' => ['required', 'in:active,inactive'],

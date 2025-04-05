@@ -44,14 +44,16 @@ export default function ProductDetails() {
         <AppLayoutProps>
             <PageTitle title="Product Details" />
             <div className="container my-16">
-                <Row className="g-4">
+                <Row className="gutter-5">
                     <Col lg={6}>
-                        <img src={product.image} className="aspect-square w-full" />
+                        <img src={product.image} className="aspect-square w-full object-contain" />
                     </Col>
                     <Col lg={6}>
                         <div className="mb-3 flex flex-col">
                             <small className="uppercase">{product.category.name}</small>
-                            <h1>{product.name}</h1>
+                            <h1>
+                                <span className="text-3xl font-bold">{product.name}</span>
+                            </h1>
                         </div>
                         <div className="mb-5 text-5xl font-black">{product.price_formatted}</div>
                         <div className="mb-4 flex flex-row gap-4">

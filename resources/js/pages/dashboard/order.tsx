@@ -95,7 +95,7 @@ export default function Orders() {
                                     <img src={row.product.image} alt={row.product.name} className="aspect-square w-12 object-fill" />
                                 </td>
                                 <td className="px-6 py-3">
-                                    <a href={route('dashboard.products.edit', { id: row.product.id })} target="_blank" className="hover:underline">
+                                    <a href={route('products.details', { id: row.product.id })} target="_blank" className="hover:underline">
                                         <strong>{row.product.name}</strong>
                                     </a>
                                     <div className="line-clamp-1">{row.product.description}</div>

@@ -15,28 +15,35 @@ const expand = 'lg';
 
 export default function AppHeader() {
     const { auth, cartItems, url } = usePage<SharedData>().props;
+
     const [y, setY] = useState(window.scrollY);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading(false);
+        }, 200);
+
         const handleScroll = () => setY(window.scrollY);
 
         window.addEventListener('scroll', handleScroll);
 
         // Cleanup on unmount
-        return () => window.removeEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            clearTimeout(timer);
+        };
     }, []);
 
     const renderNavbarMenu = () => {
         return (
-            <Navbar.Offcanvas
-                style={{ width: 300 }}
-                id={`offcanvasNavbar-expand-${expand}`}
-                aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
-                placement="start"
-            >
-                <Offcanvas.Header closeButton>
-                    <Logo />
-                </Offcanvas.Header>
+            <Navbar.Offcanvas id={`offcanvasNavbar-expand-${expand}`} aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`} placement="start">
+                {!loading && (
+                    <Offcanvas.Header closeButton>
+                        <Logo />
+                    </Offcanvas.Header>
+                )}
+
                 <Offcanvas.Body className="pt-0">
                     <Nav className="justify-content-end flex-grow-1 gap-0.5 pe-3 text-lg font-medium">
                         <Link href={route('home')} className={cn('nav-link', url === route('home') && 'active')}>
